@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PaperBot — Factures & Devis PDF par WhatsApp & Telegram</title>
+<meta name="description" content="Générez vos factures et devis PDF conformes en 10 secondes. Envoyez vos infos sur WhatsApp ou Telegram, PaperBot fait le reste et envoie le document à votre client.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700&family=Fraunces:opsz,wght@9..144,700;9..144,800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--c-green:#0A6847;--c-green-light:#10B981;--c-green-dark:#064E3B;
+--c-gold:#D97706;--c-gold-light:#F59E0B;
+--c-bg:#FDFCF9;--c-bg2:#F5F0E8;--c-bg3:#EDE8DC;
+--c-text:#1A1A1A;--c-text2:#4A4A4A;--c-text3:#7A7A7A;
+--c-white:#fff;--c-border:#E0D9CC;
+--font-display:'Fraunces',Georgia,serif;
+--font-body:'DM Sans',system-ui,-apple-system,sans-serif;
+--r:12px;--r2:20px;--shadow:0 4px 24px rgba(0,0,0,.08);
+}
+[data-theme="dark"]{
+--c-bg:#0F1410;--c-bg2:#1A2320;--c-bg3:#243029;
+--c-text:#E8E4DC;--c-text2:#B0A898;--c-text3:#7A7268;
+--c-border:#2A3530;--c-white:#1A2320;
+--shadow:0 4px 24px rgba(0,0,0,.35);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--font-body);background:var(--c-bg);color:var(--c-text);line-height:1.6;overflow-x:hidden;transition:background .3s,color .3s}
+[dir="rtl"]{text-align:right}
+[dir="rtl"] .steps-grid,[dir="rtl"] .countries-grid,[dir="rtl"] .pricing-grid{direction:rtl}
+
+/* Kente bar */
+.kente-bar{height:4px;background:repeating-linear-gradient(90deg,var(--c-green) 0 20px,var(--c-gold) 20px 35px,var(--c-green-light) 35px 50px,#DC2626 50px 60px,var(--c-green) 60px 80px);position:sticky;top:0;z-index:101}
+
+/* Nav */
+.nav{position:sticky;top:4px;z-index:100;background:var(--c-bg);border-bottom:1px solid var(--c-border);transition:background .3s}
+.nav-inner{max-width:1100px;margin:0 auto;padding:.7rem 1.25rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.logo{font-family:var(--font-display);font-weight:800;font-size:1.3rem;color:var(--c-green);text-decoration:none;display:flex;align-items:center;gap:.5rem}
+.logo svg{flex-shrink:0}
+.nav-right{display:flex;align-items:center;gap:.5rem}
+.lang-sw{position:relative}
+.lang-btn{background:var(--c-bg2);border:1px solid var(--c-border);border-radius:var(--r);padding:.35rem .65rem;font-size:.78rem;font-family:var(--font-body);color:var(--c-text);cursor:pointer;display:flex;align-items:center;gap:.3rem;transition:all .2s}
+.lang-btn:hover{border-color:var(--c-green)}
+.lang-dd{position:absolute;top:110%;right:0;background:var(--c-bg);border:1px solid var(--c-border);border-radius:var(--r);box-shadow:var(--shadow);display:none;min-width:150px;overflow:hidden;z-index:50}
+[dir="rtl"] .lang-dd{right:auto;left:0}
+.lang-dd.open{display:block}
+.lang-dd button{display:block;width:100%;padding:.5rem .85rem;border:none;background:none;text-align:left;font-family:var(--font-body);font-size:.85rem;color:var(--c-text);cursor:pointer;transition:background .15s}
+[dir="rtl"] .lang-dd button{text-align:right}
+.lang-dd button:hover{background:var(--c-bg2)}
+.lang-dd button.active{color:var(--c-green);font-weight:600}
+.nav-ctas{display:flex;gap:.6rem;align-items:center}
+.nav-cta{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:all .2s;line-height:0}
+.nav-cta-wa{color:#25D366}
+.nav-cta-wa:hover{color:#1DA851;transform:translateY(-1px)}
+.nav-cta-tg{color:#0088CC}
+.nav-cta-tg:hover{color:#006DA4;transform:translateY(-1px)}
+.nav-cta span{display:none}
+.theme-btn{background:none;border:1px solid var(--c-border);border-radius:50%;width:34px;height:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--c-text);transition:all .2s}
+.theme-btn:hover{border-color:var(--c-green);color:var(--c-green)}
+
+/* Sections */
+section{padding:3.5rem 1.25rem}
+.container{max-width:1100px;margin:0 auto}
+.section-label{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--c-green);margin-bottom:.4rem}
+.section-title{font-family:var(--font-display);font-size:clamp(1.5rem,4vw,2.2rem);font-weight:700;line-height:1.2;margin-bottom:.75rem}
+.section-sub{color:var(--c-text2);font-size:1rem;max-width:550px;line-height:1.65}
+
+/* ===== HERO ===== */
+.hero{padding:3rem 1.25rem 2.5rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40%;right:-15%;width:500px;height:500px;background:radial-gradient(circle,rgba(16,185,129,.07) 0%,transparent 70%);pointer-events:none}
+.hero .container{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center}
+.hero-text{max-width:500px}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-family:var(--font-display);font-size:clamp(1.9rem,5vw,3rem);font-weight:800;line-height:1.1;margin-bottom:1rem;letter-spacing:-.02em}
+.hero h1 .accent{color:var(--c-green);position:relative}
+.hero h1 .accent::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:5px;background:var(--c-gold-light);opacity:.3;border-radius:3px}
+.hero-sub{font-size:1.05rem;color:var(--c-text2);line-height:1.7;margin-bottom:2rem}
+.hero-ctas{display:flex;gap:.6rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.45rem;padding:.75rem 1.3rem;border-radius:var(--r);font-family:var(--font-body);font-size:.9rem;font-weight:600;text-decoration:none;border:none;cursor:pointer;transition:all .2s}
+.btn-wa{background:#25D366;color:#fff}
+.btn-wa:hover{background:#1DA851;transform:translateY(-1px);box-shadow:0 4px 15px rgba(37,211,102,.3)}
+.btn-tg{background:#0088CC;color:#fff}
+.btn-tg:hover{background:#006DA4;transform:translateY(-1px);box-shadow:0 4px 15px rgba(0,136,204,.3)}
+.btn-outline{background:none;border:1.5px solid var(--c-border);color:var(--c-text)}
+.btn-outline:hover{border-color:var(--c-green);color:var(--c-green)}
+
+/* ===== PHONE MOCKUP 3D ===== */
+.hero-visual{display:flex;justify-content:center;align-items:center;perspective:900px}
+.phone-mock{width:260px;position:relative;filter:drop-shadow(0 25px 50px rgba(0,0,0,.18)) drop-shadow(0 8px 16px rgba(0,0,0,.1));transform:rotateY(-8deg) rotateX(3deg);transform-style:preserve-3d;transition:transform .5s ease}
+.phone-mock:hover{transform:rotateY(-2deg) rotateX(1deg)}
+.phone-frame{background:#ECE5DD;border-radius:36px;overflow:hidden;border:3px solid #1a1a1a;position:relative;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),6px 0 20px rgba(0,0,0,.08),-2px 0 8px rgba(0,0,0,.04);aspect-ratio:9/19.5;display:flex;flex-direction:column}
+[data-theme="dark"] .phone-frame{border-color:#555;box-shadow:inset 0 0 0 1px rgba(255,255,255,.05),6px 0 20px rgba(0,0,0,.25),-2px 0 8px rgba(0,0,0,.15)}
+/* Status bar */
+.phone-status{background:#075E54;padding:4px 16px;display:flex;align-items:center;justify-content:space-between;font-size:.55rem;color:rgba(255,255,255,.8)}
+.phone-status-left{display:flex;gap:3px;align-items:center}
+.phone-status-right{display:flex;gap:4px;align-items:center}
+/* WhatsApp header */
+.wa-header{background:#075E54;padding:8px 12px 10px;display:flex;align-items:center;gap:8px}
+.wa-avatar{width:32px;height:32px;background:var(--c-green-light);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0}
+.wa-info{flex:1;min-width:0}
+.wa-name{color:#fff;font-size:.78rem;font-weight:600;line-height:1.2}
+.wa-status{color:rgba(255,255,255,.65);font-size:.6rem}
+/* Chat area */
+.wa-chat{padding:10px 10px 8px;flex:1;overflow-y:auto;overflow-x:hidden;background:#ECE5DD url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d4cfc4' fill-opacity='.15'%3E%3Ccircle cx='15' cy='15' r='2'/%3E%3Ccircle cx='45' cy='45' r='2'/%3E%3C/g%3E%3C/svg%3E");display:flex;flex-direction:column;justify-content:flex-end}
+[data-theme="dark"] .wa-chat{background:#0B141A}
+.wa-chat::-webkit-scrollbar{width:0;display:none}
+.chat-bubble{padding:.5rem .65rem;border-radius:8px;font-size:.72rem;margin-bottom:5px;max-width:88%;line-height:1.4;position:relative;word-break:break-word}
+.chat-time{font-size:.5rem;color:rgba(0,0,0,.35);text-align:right;margin-top:2px}
+[data-theme="dark"] .chat-time{color:rgba(255,255,255,.3)}
+.chat-user{background:#DCF8C6;color:#111;margin-left:auto;border-top-right-radius:0}
+[data-theme="dark"] .chat-user{background:#005C4B;color:#e0e0e0}
+.chat-bot{background:#fff;color:#111;border-top-left-radius:0}
+[data-theme="dark"] .chat-bot{background:#1F2C34;color:#e0e0e0}
+/* Typing indicator */
+.typing{display:flex;align-items:center;gap:3px;padding:8px 12px;background:#fff;border-radius:8px;border-top-left-radius:0;width:fit-content;margin-bottom:5px}
+[data-theme="dark"] .typing{background:#1F2C34}
+.typing span{width:6px;height:6px;background:#999;border-radius:50%;animation:typingDot 1.4s infinite}
+.typing span:nth-child(2){animation-delay:.2s}
+.typing span:nth-child(3){animation-delay:.4s}
+@keyframes typingDot{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+/* PDF attachment */
+.chat-pdf{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid #e0e0e0;padding:8px 10px;border-radius:8px;border-top-left-radius:0;font-size:.7rem;color:#111;width:fit-content;margin-bottom:5px}
+[data-theme="dark"] .chat-pdf{background:#1F2C34;border-color:#2A3530;color:#e0e0e0}
+.pdf-icon{width:32px;height:36px;background:#E53935;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.55rem;font-weight:700;flex-shrink:0}
+.pdf-info{line-height:1.3}
+.pdf-name{font-weight:600;font-size:.7rem}
+.pdf-size{color:#999;font-size:.58rem}
+/* Send to buyer badge */
+.send-badge{display:flex;align-items:center;gap:4px;padding:4px 8px;background:rgba(16,185,129,.12);border-radius:6px;font-size:.6rem;color:var(--c-green);margin-bottom:5px;width:fit-content}
+[data-theme="dark"] .send-badge{background:rgba(16,185,129,.15)}
+/* Bottom bar */
+.wa-bottom{background:#F0F0F0;padding:6px 8px;display:flex;align-items:center;gap:6px}
+[data-theme="dark"] .wa-bottom{background:#1A2328}
+.wa-input{flex:1;background:#fff;border:none;border-radius:20px;padding:6px 12px;font-size:.65rem;color:#666}
+[data-theme="dark"] .wa-input{background:#2A3942;color:#aaa}
+.wa-send{width:28px;height:28px;background:var(--c-green);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+/* Phone speed badge */
+.phone-speed{text-align:center;margin-top:.6rem;display:flex;align-items:center;justify-content:center;gap:.3rem;font-size:.75rem;color:var(--c-text2);font-weight:600}
+/* Animations for chat bubbles */
+.chat-hidden{opacity:0;transform:translateY(8px)}
+.chat-show{opacity:1;transform:translateY(0);transition:opacity .35s ease,transform .35s ease}
+.typing-show{opacity:1;transform:translateY(0);transition:opacity .25s ease,transform .25s ease}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.type-cursor{display:inline-block;width:2px;height:.85em;background:var(--c-text);margin-left:1px;vertical-align:middle;animation:blink .6s step-end infinite}
+.chat-user .type-cursor{background:#111}
+[data-theme="dark"] .chat-user .type-cursor{background:#e0e0e0}
+.chat-bot .type-cursor{background:#111}
+[data-theme="dark"] .chat-bot .type-cursor{background:#e0e0e0}
+
+/* ===== STEPS ===== */
+.steps{background:var(--c-bg2)}
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2rem}
+.step-card{text-align:center;padding:1.5rem 1rem}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;background:var(--c-green);color:#fff;font-family:var(--font-display);font-weight:700;font-size:1rem;border-radius:50%;margin-bottom:1rem}
+.step-card h3{font-family:var(--font-display);font-size:1.05rem;font-weight:700;margin-bottom:.35rem}
+.step-card p{color:var(--c-text2);font-size:.85rem;line-height:1.55}
+
+/* ===== PRICING ===== */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:2rem}
+.pricing-card{background:var(--c-bg2);border:1px solid var(--c-border);border-radius:var(--r2);padding:1.75rem;position:relative;transition:all .25s}
+.pricing-card.popular{border-color:var(--c-green);background:var(--c-bg);box-shadow:0 0 0 1px var(--c-green)}
+.pricing-card.popular::before{content:attr(data-badge);position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--c-green);color:#fff;font-size:.68rem;font-weight:600;padding:.2rem .7rem;border-radius:99px;white-space:nowrap}
+.pricing-name{font-family:var(--font-display);font-size:1.15rem;font-weight:700;margin-bottom:.15rem}
+.pricing-desc{color:var(--c-text2);font-size:.82rem}
+.pricing-price{font-family:var(--font-display);font-size:1.8rem;font-weight:800;color:var(--c-green);margin:.6rem 0}
+.pricing-price span{font-size:.8rem;font-weight:400;color:var(--c-text3)}
+.pricing-features{list-style:none;margin:1rem 0 1.25rem}
+.pricing-features li{padding:.3rem 0;font-size:.82rem;color:var(--c-text2);display:flex;align-items:flex-start;gap:.4rem}
+.pricing-features li::before{content:'✓';color:var(--c-green);font-weight:700;flex-shrink:0}
+.pricing-cta{width:100%}
+/* Payment logos */
+.payment-methods{margin-top:2rem;text-align:center}
+.payment-label{font-size:.75rem;color:var(--c-text3);margin-bottom:.6rem}
+.payment-logos{display:flex;align-items:center;justify-content:center;gap:1.25rem;flex-wrap:wrap}
+.pay-logo{display:flex;align-items:center;gap:.35rem;padding:.45rem .75rem;background:var(--c-bg2);border:1px solid var(--c-border);border-radius:var(--r);font-size:.78rem;font-weight:600;color:var(--c-text)}
+.pay-logo .pay-dot{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:700;color:#fff;flex-shrink:0}
+.pay-om{background:#FF6600}
+.pay-wave{background:#1DC8F2}
+.pay-momo{background:#FFCC00;color:#333!important}
+
+/* ===== COUNTRIES ===== */
+.countries{background:var(--c-bg2)}
+.countries{text-align:center}
+.countries-zones{margin-top:2rem}
+.countries-active{display:flex;flex-wrap:wrap;gap:1.5rem 2.5rem;justify-content:center;margin-bottom:2rem}
+.country-active{display:flex;align-items:center;gap:.5rem;font-size:1rem;font-weight:600;color:var(--c-text)}
+.country-active .country-flag{font-size:1.5rem}
+.country-active .country-dot{width:7px;height:7px;background:var(--c-green-light);border-radius:50%;flex-shrink:0;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.countries-soon-label{font-size:.72rem;color:var(--c-text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.75rem}
+.countries-soon{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;justify-content:center}
+.country-soon{display:flex;align-items:center;gap:.35rem;font-size:.82rem;color:var(--c-text3)}
+.country-soon .country-flag{font-size:1rem;filter:grayscale(.5);opacity:.6}
+
+/* ===== FAQ ===== */
+.faq-list{max-width:700px;margin-top:1.5rem}
+.faq-item{border-bottom:1px solid var(--c-border)}
+.faq-q{width:100%;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 0;background:none;border:none;font-family:var(--font-body);font-size:.92rem;font-weight:600;color:var(--c-text);cursor:pointer;text-align:left}
+[dir="rtl"] .faq-q{text-align:right}
+.faq-q svg{flex-shrink:0;transition:transform .25s;color:var(--c-text3)}
+.faq-item.open .faq-q svg{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.faq-item.open .faq-a{max-height:300px}
+.faq-a p{padding:0 0 1rem;color:var(--c-text2);font-size:.88rem;line-height:1.65}
+
+/* ===== FOOTER CTA ===== */
+.footer-cta{text-align:center;background:linear-gradient(135deg,var(--c-green-dark),var(--c-green));color:#fff;position:relative;overflow:hidden;padding:3rem 1.25rem}
+.footer-cta::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent 0 30px,rgba(255,255,255,.03) 30px 32px);pointer-events:none}
+.footer-cta .section-label{color:var(--c-gold-light)}
+.footer-cta .section-title{color:#fff}
+.footer-cta .section-sub{color:rgba(255,255,255,.8);margin:0 auto .5rem}
+.footer-cta-btns{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-top:1.25rem}
+footer{background:var(--c-bg);border-top:1px solid var(--c-border);padding:.75rem 1.25rem}
+.footer-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.footer-left{display:flex;align-items:center;gap:.35rem;color:var(--c-text3)}
+.footer-brand{font-family:var(--font-display);font-size:.85rem;font-weight:700;color:var(--c-text3);opacity:.5}
+.footer-center{display:flex;align-items:center;gap:.5rem;position:relative}
+.footer-sep{color:var(--c-text3);opacity:.3;font-size:.7rem}
+.footer-legal-trigger{color:var(--c-text3);font-size:.68rem;text-decoration:none;transition:color .2s;cursor:pointer;background:none;border:none;font-family:var(--font-body)}
+.footer-legal-trigger:hover{color:var(--c-green)}
+.footer-legal-wrap{position:relative;display:flex;align-items:center;gap:.5rem}
+.footer-legal-popup{display:none;position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%);background:var(--c-bg);border:1px solid var(--c-border);border-radius:var(--r2);box-shadow:var(--shadow),0 8px 32px rgba(0,0,0,.12);padding:1.25rem 1.5rem;width:340px;z-index:200;text-align:left;max-height:60vh;overflow-y:auto}
+.footer-legal-popup.open{display:block}
+.footer-legal-popup::after{content:'';position:absolute;bottom:-6px;left:50%;transform:translateX(-50%) rotate(45deg);width:10px;height:10px;background:var(--c-bg);border-right:1px solid var(--c-border);border-bottom:1px solid var(--c-border)}
+.footer-legal-popup h4{font-size:.75rem;font-weight:700;color:var(--c-green);margin-bottom:.3rem}
+.footer-legal-popup p{font-size:.7rem;color:var(--c-text2);line-height:1.55;margin-bottom:.5rem}
+.footer-legal-popup hr{border:none;border-top:1px solid var(--c-border);margin:.6rem 0}
+.footer-right{color:var(--c-text3);font-size:.68rem;opacity:.5;white-space:nowrap}
+@media(max-width:480px){.footer-inner{flex-direction:column;gap:.4rem;text-align:center}.footer-legal-popup{left:auto;right:-20px;transform:none;width:280px}}
+
+/* Responsive */
+@media(max-width:768px){
+.hero .container{grid-template-columns:1fr}
+.hero-visual{order:-1}
+.phone-mock{width:240px}
+.steps-grid{grid-template-columns:1fr;gap:.75rem}
+.pricing-grid{grid-template-columns:1fr;max-width:360px}
+section{padding:2.5rem 1.25rem}
+}
+@media(max-width:480px){
+.hero h1{font-size:1.65rem}
+.hero-ctas{flex-direction:column}
+.btn{justify-content:center}
+.phone-mock{width:210px}
+}
+
+/* Animations */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease}
+.reveal.visible{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- Kente bar -->
+<div class="kente-bar" aria-hidden="true"></div>
+
+<!-- Nav -->
+<nav class="nav">
+<div class="nav-inner">
+<a href="#" class="logo">
+<svg width="26" height="26" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0A6847"/><path d="M7 9h14M7 13h10M7 17h12M19 15l3 3-3 3" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+PaperBot
+</a>
+<div class="nav-right">
+<div class="nav-ctas">
+<a href="https://wa.me/XXXXXXXXXXX" class="nav-cta nav-cta-wa" aria-label="WhatsApp">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+<span data-i18n="ctaWA">WhatsApp</span>
+</a>
+<a href="https://t.me/paperbotXXX" class="nav-cta nav-cta-tg" aria-label="Telegram">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+<span data-i18n="ctaTG">Telegram</span>
+</a>
+</div>
+<div class="lang-sw">
+<button class="lang-btn" onclick="toggleLangDD()" aria-label="Language">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+<span id="currentLang">FR</span>
+<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+</button>
+<div class="lang-dd" id="langDD">
+<button onclick="setLang('fr')" class="active">🇫🇷 Français</button>
+<button onclick="setLang('en')">🇬🇧 English</button>
+<button onclick="setLang('ar')">🇲🇦 العربية</button>
+<button onclick="setLang('pt')">🇵🇹 Português</button>
+<button onclick="setLang('sw')">🇰🇪 Kiswahili</button>
+</div>
+</div>
+<button class="theme-btn" onclick="toggleTheme()" aria-label="Dark mode" id="themeBtn">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+</div>
+</div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+<div class="container">
+<div class="hero-text">
+<h1 data-i18n="heroTitle">Envoyez un message,<br>recevez une <span class="accent">facture</span>.</h1>
+<p class="hero-sub" data-i18n="heroSub">Factures et devis PDF conformes en 10 secondes. Tapez vos infos sur WhatsApp ou Telegram, PaperBot génère le document et l'envoie à votre client.</p>
+<div class="hero-ctas">
+<a href="https://wa.me/XXXXXXXXXXX" class="btn btn-wa">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+<span data-i18n="ctaWA">WhatsApp</span>
+</a>
+<a href="https://t.me/paperbotXXX" class="btn btn-tg">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+<span data-i18n="ctaTG">Telegram</span>
+</a>
+</div>
+</div>
+<div class="hero-visual">
+<div class="phone-mock">
+<div class="phone-frame">
+<!-- Status bar -->
+<div class="phone-status">
+<div class="phone-status-left">
+<span>9:41</span>
+</div>
+<div class="phone-status-right">
+<svg width="12" height="8" viewBox="0 0 12 8" fill="none"><rect x="0" y="4" width="2" height="4" rx=".5" fill="rgba(255,255,255,.5)"/><rect x="3" y="2.5" width="2" height="5.5" rx=".5" fill="rgba(255,255,255,.7)"/><rect x="6" y="1" width="2" height="7" rx=".5" fill="rgba(255,255,255,.85)"/><rect x="9" y="0" width="2" height="8" rx=".5" fill="#fff"/></svg>
+<svg width="14" height="8" viewBox="0 0 14 8" fill="#fff"><rect x="0" y="1" width="10" height="6" rx="1" stroke="#fff" stroke-width=".8" fill="none"/><rect x="1" y="2" width="7" height="4" rx=".5" fill="#fff"/><rect x="10.5" y="3" width="1.5" height="2" rx=".5" fill="#fff"/></svg>
+</div>
+</div>
+<!-- WhatsApp header -->
+<div class="wa-header">
+<div class="wa-avatar">🤖</div>
+<div class="wa-info">
+<div class="wa-name">PaperBot</div>
+<div class="wa-status" data-i18n="waStatus">en ligne</div>
+</div>
+</div>
+<!-- Chat area -->
+<div class="wa-chat" id="waChat">
+</div>
+<!-- Bottom bar -->
+<div class="wa-bottom">
+<div class="wa-input" data-i18n="waPlaceholder">Tapez vos infos ici...</div>
+<div class="wa-send">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+</div>
+</div>
+</div>
+<div class="phone-speed">⚡ <span data-i18n="speed">10 secondes</span></div>
+</div>
+</div>
+</section>
+
+<!-- ===== COMMENT ÇA MARCHE ===== -->
+<section class="steps" id="how">
+<div class="container">
+<span class="section-label" data-i18n="howLabel">Comment ça marche</span>
+<h2 class="section-title" data-i18n="howTitle">Trois étapes. Zéro complication.</h2>
+<div class="steps-grid">
+<div class="step-card reveal">
+<div class="step-num">1</div>
+<h3 data-i18n="step1Title">Envoyez vos infos</h3>
+<p data-i18n="step1Desc">Tapez les détails en vrac : client, articles, prix, numéro de téléphone. En texte libre.</p>
+</div>
+<div class="step-card reveal">
+<div class="step-num">2</div>
+<h3 data-i18n="step2Title">PaperBot génère</h3>
+<p data-i18n="step2Desc">Le bot structure tout, applique la TVA et les mentions légales de votre pays. En 10 secondes.</p>
+</div>
+<div class="step-card reveal">
+<div class="step-num">3</div>
+<h3 data-i18n="step3Title">Le client reçoit</h3>
+<p data-i18n="step3Desc">La facture PDF est envoyée automatiquement au numéro de téléphone de votre client.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ===== TARIFS ===== -->
+<section class="pricing" id="pricing">
+<div class="container">
+<span class="section-label" data-i18n="pricingLabel">Tarifs</span>
+<h2 class="section-title" data-i18n="pricingTitle">Commencez gratuitement.</h2>
+<div class="pricing-grid">
+<div class="pricing-card reveal">
+<div class="pricing-name" data-i18n="plan1Name">Gratuit</div>
+<p class="pricing-desc" data-i18n="plan1Desc">Pour découvrir</p>
+<div class="pricing-price">0 <span>FCFA</span></div>
+<ul class="pricing-features">
+<li data-i18n="plan1F1">5 documents / mois</li>
+<li data-i18n="plan1F2">Factures & devis PDF</li>
+<li data-i18n="plan1F3">Envoi auto au client</li>
+<li data-i18n="plan1F4">Numérotation automatique</li>
+<li data-i18n="plan1F5">WhatsApp ou Telegram</li>
+</ul>
+<a href="https://wa.me/XXXXXXXXXXX" class="btn btn-outline pricing-cta"><span data-i18n="planCta">Commencer</span></a>
+</div>
+<div class="pricing-card popular reveal" data-badge="★ Populaire">
+<div class="pricing-name" data-i18n="plan2Name">Pro</div>
+<p class="pricing-desc" data-i18n="plan2Desc">Indépendants & PME</p>
+<div class="pricing-price">1 990 <span data-i18n="perMonth">FCFA/mois</span></div>
+<ul class="pricing-features">
+<li data-i18n="plan2F1">Documents illimités</li>
+<li data-i18n="plan2F2">Logo & infos personnalisés</li>
+<li data-i18n="plan2F3">Historique & recherche</li>
+<li data-i18n="plan2F4">Support prioritaire</li>
+</ul>
+<a href="https://wa.me/XXXXXXXXXXX?text=Bonjour%2C%20je%20veux%20passer%20au%20plan%20Pro%20%F0%9F%9A%80" class="btn btn-wa pricing-cta"><span data-i18n="planCta">Commencer</span></a>
+</div>
+<div class="pricing-card reveal">
+<div class="pricing-name" data-i18n="plan3Name">Business</div>
+<p class="pricing-desc" data-i18n="plan3Desc">Équipes & entreprises</p>
+<div class="pricing-price">9 990 <span data-i18n="perMonth">FCFA/mois</span></div>
+<ul class="pricing-features">
+<li data-i18n="plan3F1">Tout le plan Pro</li>
+<li data-i18n="plan3F2">Multi-utilisateurs (5)</li>
+<li data-i18n="plan3F3">🔔 Alertes appels d'offres</li>
+<li data-i18n="plan3F4">Relances paiement auto</li>
+<li data-i18n="plan3F5">Tableau de bord & stats</li>
+<li data-i18n="plan3F6">Export comptable (Excel/PDF)</li>
+<li data-i18n="plan3F7">API d'intégration</li>
+</ul>
+<a href="https://wa.me/XXXXXXXXXXX?text=Bonjour%2C%20je%20veux%20passer%20au%20plan%20Business%20%F0%9F%8F%A2" class="btn btn-outline pricing-cta"><span data-i18n="planCta">Commencer</span></a>
+</div>
+</div>
+<!-- Payment methods -->
+<div class="payment-methods reveal">
+<p class="payment-label" data-i18n="payLabel">Moyens de paiement acceptés</p>
+<div class="payment-logos">
+<div class="pay-logo"><div class="pay-dot pay-om">OM</div> Orange Money</div>
+<div class="pay-logo"><div class="pay-dot pay-wave">W</div> Wave</div>
+<div class="pay-logo"><div class="pay-dot pay-momo">M</div> MTN MoMo</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ===== PAYS ===== -->
+<section class="countries" id="countries">
+<div class="container">
+<h2 class="section-title" data-i18n="countriesTitle">Déjà disponible dans 5 pays.</h2>
+<div class="countries-zones">
+<div class="countries-active">
+<div class="country-active reveal"><span class="country-flag">🇸🇳</span><span data-i18n="c_SN">Sénégal</span><span class="country-dot"></span></div>
+<div class="country-active reveal"><span class="country-flag">🇨🇮</span><span data-i18n="c_CI">Côte d'Ivoire</span><span class="country-dot"></span></div>
+<div class="country-active reveal"><span class="country-flag">🇲🇱</span><span data-i18n="c_ML">Mali</span><span class="country-dot"></span></div>
+<div class="country-active reveal"><span class="country-flag">🇧🇫</span><span data-i18n="c_BF">Burkina Faso</span><span class="country-dot"></span></div>
+<div class="country-active reveal"><span class="country-flag">🇨🇲</span><span data-i18n="c_CM">Cameroun</span><span class="country-dot"></span></div>
+</div>
+<p class="countries-soon-label" data-i18n="soonLabel2">Bientôt</p>
+<div class="countries-soon">
+<span class="country-soon"><span class="country-flag">🇧🇯</span><span data-i18n="c_BJ">Bénin</span></span>
+<span class="country-soon"><span class="country-flag">🇹🇬</span><span data-i18n="c_TG">Togo</span></span>
+<span class="country-soon"><span class="country-flag">🇳🇪</span><span data-i18n="c_NE">Niger</span></span>
+<span class="country-soon"><span class="country-flag">🇬🇼</span><span data-i18n="c_GW">Guinée-Bissau</span></span>
+<span class="country-soon"><span class="country-flag">🇬🇦</span><span data-i18n="c_GA">Gabon</span></span>
+<span class="country-soon"><span class="country-flag">🇹🇩</span><span data-i18n="c_TD">Tchad</span></span>
+<span class="country-soon"><span class="country-flag">🇨🇬</span><span data-i18n="c_CG">Congo</span></span>
+<span class="country-soon"><span class="country-flag">🇨🇫</span><span data-i18n="c_CF">Centrafrique</span></span>
+<span class="country-soon"><span class="country-flag">🇬🇶</span><span data-i18n="c_GQ">Guinée Éq.</span></span>
+<span class="country-soon"><span class="country-flag">🇳🇬</span><span>Nigeria</span></span>
+<span class="country-soon"><span class="country-flag">🇰🇪</span><span>Kenya</span></span>
+<span class="country-soon"><span class="country-flag">🇲🇦</span><span data-i18n="c_MA">Maroc</span></span>
+<span class="country-soon"><span class="country-flag">🇬🇭</span><span>Ghana</span></span>
+<span class="country-soon"><span class="country-flag">🇹🇿</span><span>Tanzania</span></span>
+<span class="country-soon"><span class="country-flag">🇦🇴</span><span>Angola</span></span>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="faq" id="faq">
+<div class="container">
+<span class="section-label" data-i18n="faqLabel">FAQ</span>
+<h2 class="section-title" data-i18n="faqTitle">Questions fréquentes</h2>
+<div class="faq-list">
+<div class="faq-item">
+<button class="faq-q" onclick="toggleFaq(this)">
+<span data-i18n="faq1Q">Comment ça marche concrètement ?</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+</button>
+<div class="faq-a"><p data-i18n="faq1A">Envoyez "Bonjour" au bot sur WhatsApp ou Telegram. Tapez les infos de votre facture en vrac (client, articles, prix, numéro de tel). Le bot génère le PDF et l'envoie automatiquement à votre client. Aucune inscription.</p></div>
+</div>
+<div class="faq-item">
+<button class="faq-q" onclick="toggleFaq(this)">
+<span data-i18n="faq2Q">Les factures sont-elles conformes ?</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+</button>
+<div class="faq-a"><p data-i18n="faq2A">Oui. PaperBot applique automatiquement la TVA, les mentions légales et la numérotation conforme aux normes SYSCOHADA et fiscales de chaque pays de la zone FCFA.</p></div>
+</div>
+<div class="faq-item">
+<button class="faq-q" onclick="toggleFaq(this)">
+<span data-i18n="faq3Q">La facture est vraiment envoyée au client ?</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+</button>
+<div class="faq-a"><p data-i18n="faq3A">Oui. Indiquez le numéro de téléphone de votre client dans le message. PaperBot envoie automatiquement la facture PDF par WhatsApp ou SMS à ce numéro.</p></div>
+</div>
+<div class="faq-item">
+<button class="faq-q" onclick="toggleFaq(this)">
+<span data-i18n="faq4Q">Mes données sont-elles sécurisées ?</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+</button>
+<div class="faq-a"><p data-i18n="faq4A">Oui. Vos données sont chiffrées et stockées sur des serveurs sécurisés. PaperBot ne partage jamais vos informations avec des tiers. Vos factures restent confidentielles.</p></div>
+</div>
+<div class="faq-item">
+<button class="faq-q" onclick="toggleFaq(this)">
+<span data-i18n="faq5Q">Je peux modifier ou annuler une facture ?</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+</button>
+<div class="faq-a"><p data-i18n="faq5A">Oui. Envoyez "modifier" ou "annuler" suivi du numéro de facture. PaperBot génère un avoir ou une facture rectificative conforme.</p></div>
+</div>
+<div class="faq-item">
+<button class="faq-q" onclick="toggleFaq(this)">
+<span data-i18n="faq6Q">Quels moyens de paiement pour l'abonnement ?</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+</button>
+<div class="faq-a"><p data-i18n="faq6A">Orange Money, Wave et MTN MoMo. Le paiement se fait directement via mobile money. Aucune carte bancaire nécessaire.</p></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ===== FOOTER CTA ===== -->
+<section class="footer-cta">
+<div class="container">
+<span class="section-label" data-i18n="ctaLabel">Prêt ?</span>
+<h2 class="section-title" data-i18n="ctaTitle">Votre première facture en 10 secondes.</h2>
+<p class="section-sub" data-i18n="ctaSub">Gratuit. Sans inscription.</p>
+<div class="footer-cta-btns">
+<a href="https://wa.me/XXXXXXXXXXX" class="btn btn-wa">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+<span data-i18n="ctaWA">WhatsApp</span>
+</a>
+<a href="https://t.me/paperbotXXX" class="btn btn-tg">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+<span data-i18n="ctaTG">Telegram</span>
+</a>
+</div>
+</div>
+</section>
+
+<footer>
+<div class="footer-inner">
+<div class="footer-left">
+<svg width="18" height="18" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="currentColor" opacity=".25"/><path d="M7 9h14M7 13h10M7 17h12M19 15l3 3-3 3" stroke="currentColor" opacity=".4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<span class="footer-brand">PaperBot</span>
+</div>
+<div class="footer-center">
+<div class="footer-legal-wrap" id="footerLegalWrap">
+<a href="#" class="footer-legal-trigger" data-i18n="legalMentions" onclick="toggleLegalPopup(event,'mentions')">Mentions légales</a>
+<span class="footer-sep">·</span>
+<a href="#" class="footer-legal-trigger" data-i18n="legalPrivacy" onclick="toggleLegalPopup(event,'privacy')">Confidentialité</a>
+<span class="footer-sep">·</span>
+<a href="#" class="footer-legal-trigger" data-i18n="legalTerms" onclick="toggleLegalPopup(event,'terms')">CGU</a>
+<div class="footer-legal-popup" id="legalPopup">
+<div id="legal-mentions">
+<h4 data-i18n="legalMentions">Mentions légales</h4>
+<p>PaperBot SAS · Dakar, Sénégal<br>NINEA : En cours · RC : En cours<br>Contact : contact@paperbot.africa</p>
+</div>
+<hr>
+<div id="legal-privacy">
+<h4 data-i18n="legalPrivacy">Politique de confidentialité</h4>
+<p data-i18n="privacyText">Vos données sont chiffrées et stockées sur des serveurs sécurisés. PaperBot ne partage aucune information personnelle avec des tiers. Les factures sont conservées 10 ans conformément aux obligations SYSCOHADA.</p>
+</div>
+<hr>
+<div id="legal-terms">
+<h4 data-i18n="legalTerms">CGU</h4>
+<p data-i18n="termsText">En utilisant PaperBot, vous acceptez nos conditions d'utilisation. Le service est fourni "en l'état". PaperBot se réserve le droit de modifier les tarifs avec un préavis de 30 jours.</p>
+<p data-i18n="cancelInfo" style="margin-top:.4rem;font-style:italic">Pour résilier votre abonnement, envoyez simplement le mot « résilier » au bot sur WhatsApp ou Telegram. La résiliation est immédiate et sans frais.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="footer-right">© 2026</div>
+</div>
+</footer>
+
+<script>
+// ===== TRANSLATIONS =====
+const T={
+fr:{
+heroTitle:'Envoyez un message,<br>recevez une <span class="accent">facture</span>.',
+heroSub:"Factures et devis PDF conformes en 10 secondes. Tapez vos infos sur WhatsApp ou Telegram, PaperBot génère le document et l'envoie à votre client.",
+ctaWA:"WhatsApp",ctaTG:"Telegram",
+waStatus:"en ligne",
+chatUser:"Facture Moussa Diallo, tel 77 123 45 67, 3 sacs ciment 5000F, livraison 2000F",
+chatBot:"✅ Facture générée ! Envoyée à Moussa au 77 123 45 67",
+pdfCompliant:"Conforme SYSCOHADA",
+sentTo:"→ Envoyé au 77 123 45 67",
+waPlaceholder:"Tapez vos infos ici...",
+speed:"10 secondes",
+howLabel:"Comment ça marche",
+howTitle:"Trois étapes. Zéro complication.",
+step1Title:"Envoyez vos infos",step1Desc:"Tapez les détails en vrac : client, articles, prix, numéro de téléphone. En texte libre.",
+step2Title:"PaperBot génère",step2Desc:"Le bot structure tout, applique la TVA et les mentions légales de votre pays. En 10 secondes.",
+step3Title:"Le client reçoit",step3Desc:"La facture PDF est envoyée automatiquement au numéro de téléphone de votre client.",
+pricingLabel:"Tarifs",pricingTitle:"Commencez gratuitement.",
+plan1Name:"Gratuit",plan1Desc:"Pour découvrir",plan1F1:"5 documents / mois",plan1F2:"Factures & devis PDF",plan1F3:"Envoi auto au client",plan1F4:"Numérotation automatique",plan1F5:"WhatsApp ou Telegram",
+plan2Name:"Pro",plan2Desc:"Indépendants & PME",plan2F1:"Documents illimités",plan2F2:"Logo & infos personnalisés",plan2F3:"Historique & recherche",plan2F4:"Support prioritaire",
+plan3Name:"Business",plan3Desc:"Équipes & entreprises",plan3F1:"Tout le plan Pro",plan3F2:"Multi-utilisateurs (5)",plan3F3:"🔔 Alertes appels d'offres",plan3F4:"Relances paiement auto",plan3F5:"Tableau de bord & stats",plan3F6:"Export comptable (Excel/PDF)",plan3F7:"API d'intégration",
+planCta:"Commencer",perMonth:"FCFA/mois",
+popularBadge:"★ Populaire",
+payLabel:"Moyens de paiement acceptés",
+countriesLabel:"Disponibilité",countriesTitle:"Déjà disponible dans 5 pays.",
+badgeActive:"Actif",
+soonLabel:'Bientôt disponible <span class="zone-badge zone-badge-soon">Coming soon</span>',
+soonLabel2:"Bientôt",
+privacyText:"Vos données sont chiffrées et stockées sur des serveurs sécurisés. PaperBot ne partage aucune information personnelle avec des tiers. Les factures sont conservées 10 ans conformément aux obligations SYSCOHADA.",
+termsText:"En utilisant PaperBot, vous acceptez nos conditions d'utilisation. Le service est fourni \"en l'état\". PaperBot se réserve le droit de modifier les tarifs avec un préavis de 30 jours.",
+c_SN:"Sénégal",c_CI:"Côte d'Ivoire",c_ML:"Mali",c_BF:"Burkina Faso",c_BJ:"Bénin",c_TG:"Togo",c_GW:"Guinée-Bissau",c_NE:"Niger",
+c_CM:"Cameroun",c_GA:"Gabon",c_TD:"Tchad",c_CG:"Congo",c_CF:"Centrafrique",c_GQ:"Guinée Éq.",c_MA:"Maroc",
+faqLabel:"FAQ",faqTitle:"Questions fréquentes",
+faq1Q:"Comment ça marche concrètement ?",faq1A:"Envoyez \"Bonjour\" au bot sur WhatsApp ou Telegram. Tapez les infos de votre facture en vrac (client, articles, prix, numéro de tel). Le bot génère le PDF et l'envoie automatiquement à votre client. Aucune inscription.",
+faq2Q:"Les factures sont-elles conformes ?",faq2A:"Oui. PaperBot applique automatiquement la TVA, les mentions légales et la numérotation conforme aux normes SYSCOHADA et fiscales de chaque pays de la zone FCFA.",
+faq3Q:"La facture est vraiment envoyée au client ?",faq3A:"Oui. Indiquez le numéro de téléphone de votre client dans le message. PaperBot envoie automatiquement la facture PDF par WhatsApp ou SMS à ce numéro.",
+faq4Q:"Mes données sont-elles sécurisées ?",faq4A:"Oui. Vos données sont chiffrées et stockées sur des serveurs sécurisés. PaperBot ne partage jamais vos informations avec des tiers. Vos factures restent confidentielles.",
+faq5Q:"Je peux modifier ou annuler une facture ?",faq5A:'Oui. Envoyez "modifier" ou "annuler" suivi du numéro de facture. PaperBot génère un avoir ou une facture rectificative conforme.',
+faq6Q:"Quels moyens de paiement pour l'abonnement ?",faq6A:"Orange Money, Wave et MTN MoMo. Le paiement se fait directement via mobile money. Aucune carte bancaire nécessaire.",
+ctaLabel:"Prêt ?",ctaTitle:"Votre première facture en 10 secondes.",ctaSub:"Gratuit. Sans inscription.",
+footerText:"Fait avec ❤️ pour l'Afrique",
+cancelInfo:"Pour résilier votre abonnement, envoyez simplement le mot « résilier » au bot sur WhatsApp ou Telegram. La résiliation est immédiate et sans frais.",
+legalMentions:"Mentions légales",legalPrivacy:"Politique de confidentialité",legalTerms:"CGU"
+},
+en:{
+heroTitle:'Send a message,<br>get an <span class="accent">invoice</span>.',
+heroSub:"Compliant PDF invoices and quotes in 10 seconds. Type your info on WhatsApp or Telegram, PaperBot generates the document and sends it to your client.",
+ctaWA:"WhatsApp",ctaTG:"Telegram",
+waStatus:"online",
+chatUser:"Invoice John Okafor, tel 0812 345 6789, 3 bags cement 15000₦, delivery 5000₦",
+chatBot:"✅ Invoice generated! Sent to John at 0812 345 6789",
+pdfCompliant:"Tax compliant",
+sentTo:"→ Sent to 0812 345 6789",
+waPlaceholder:"Type your info here...",
+speed:"10 seconds",
+howLabel:"How it works",
+howTitle:"Three steps. Zero hassle.",
+step1Title:"Send your info",step1Desc:"Type the details in bulk: client, items, prices, phone number. As free text.",
+step2Title:"PaperBot generates",step2Desc:"The bot structures everything, applies VAT and legal requirements. In 10 seconds.",
+step3Title:"Client receives",step3Desc:"The PDF invoice is automatically sent to your client's phone number.",
+pricingLabel:"Pricing",pricingTitle:"Start for free.",
+plan1Name:"Free",plan1Desc:"To discover",plan1F1:"5 documents / month",plan1F2:"PDF invoices & quotes",plan1F3:"Auto-send to client",plan1F4:"Auto-numbering",plan1F5:"WhatsApp or Telegram",
+plan2Name:"Pro",plan2Desc:"Freelancers & SMBs",plan2F1:"Unlimited documents",plan2F2:"Custom logo & info",plan2F3:"History & search",plan2F4:"Priority support",
+plan3Name:"Business",plan3Desc:"Teams & companies",plan3F1:"Everything in Pro",plan3F2:"Multi-users (5)",plan3F3:"🔔 Tender alerts",plan3F4:"Auto payment reminders",plan3F5:"Dashboard & analytics",plan3F6:"Accounting export (Excel/PDF)",plan3F7:"Integration API",
+planCta:"Get started",perMonth:"FCFA/mo",
+popularBadge:"★ Popular",
+payLabel:"Accepted payment methods",
+countriesLabel:"Availability",countriesTitle:"Already available in 5 countries.",
+badgeActive:"Active",
+soonLabel:'Coming soon <span class="zone-badge zone-badge-soon">Coming soon</span>',
+soonLabel2:"Soon",
+privacyText:"Your data is encrypted and stored on secure servers. PaperBot never shares personal information with third parties. Invoices are kept for 10 years as required by SYSCOHADA.",
+termsText:"By using PaperBot, you accept our terms of use. The service is provided \"as is\". PaperBot reserves the right to modify pricing with 30 days notice.",
+c_SN:"Senegal",c_CI:"Côte d'Ivoire",c_ML:"Mali",c_BF:"Burkina Faso",c_BJ:"Benin",c_TG:"Togo",c_GW:"Guinea-Bissau",c_NE:"Niger",
+c_CM:"Cameroon",c_GA:"Gabon",c_TD:"Chad",c_CG:"Congo",c_CF:"Central Africa",c_GQ:"Eq. Guinea",c_MA:"Morocco",
+faqLabel:"FAQ",faqTitle:"Frequently asked questions",
+faq1Q:"How does it work exactly?",faq1A:"Send \"Hello\" to the bot on WhatsApp or Telegram. Type your invoice info (client, items, prices, phone number). The bot generates the PDF and automatically sends it to your client. No sign-up.",
+faq2Q:"Are invoices compliant?",faq2A:"Yes. PaperBot automatically applies VAT, legal mentions and numbering compliant with SYSCOHADA and tax rules for each FCFA zone country.",
+faq3Q:"Is the invoice really sent to the client?",faq3A:"Yes. Include your client's phone number in the message. PaperBot automatically sends the PDF invoice via WhatsApp or SMS to that number.",
+faq4Q:"Is my data secure?",faq4A:"Yes. Your data is encrypted and stored on secure servers. PaperBot never shares your information with third parties. Your invoices remain confidential.",
+faq5Q:"Can I modify or cancel an invoice?",faq5A:'Yes. Send "modify" or "cancel" followed by the invoice number. PaperBot generates a credit note or corrective invoice.',
+faq6Q:"What payment methods for the subscription?",faq6A:"Orange Money, Wave and MTN MoMo. Payment is made directly via mobile money. No bank card required.",
+ctaLabel:"Ready?",ctaTitle:"Your first invoice in 10 seconds.",ctaSub:"Free. No sign-up.",
+footerText:"Made with ❤️ for Africa",
+cancelInfo:"To cancel your subscription, simply send the word \"cancel\" to the bot on WhatsApp or Telegram. Cancellation is immediate and free of charge.",
+legalMentions:"Legal notice",legalPrivacy:"Privacy policy",legalTerms:"Terms of use"
+},
+ar:{
+heroTitle:'أرسل رسالة،<br>واحصل على <span class="accent">فاتورة</span>.',
+heroSub:"فواتير وعروض أسعار PDF متوافقة في 10 ثوانٍ. اكتب معلوماتك على واتساب أو تيليجرام، PaperBot يُنشئ المستند ويرسله لعميلك.",
+ctaWA:"واتساب",ctaTG:"تيليجرام",
+waStatus:"متصل",
+chatUser:"فاتورة أحمد بنعمر، هاتف 0661 234 567، 3 أكياس إسمنت 150 درهم، توصيل 50 درهم",
+chatBot:"✅ الفاتورة جاهزة! تم إرسالها لأحمد على 0661 234 567",
+pdfCompliant:"متوافقة ضريبياً",
+sentTo:"→ تم الإرسال إلى 0661 234 567",
+waPlaceholder:"اكتب معلوماتك هنا...",
+speed:"10 ثوانٍ",
+howLabel:"كيف يعمل",
+howTitle:"ثلاث خطوات. بدون تعقيد.",
+step1Title:"أرسل معلوماتك",step1Desc:"اكتب التفاصيل: العميل، المنتجات، الأسعار، رقم الهاتف. كنص حر.",
+step2Title:"PaperBot يُنشئ",step2Desc:"البوت ينظم كل شيء ويطبق الضريبة والمتطلبات القانونية. في 10 ثوانٍ.",
+step3Title:"العميل يستلم",step3Desc:"الفاتورة PDF تُرسل تلقائياً إلى رقم هاتف عميلك.",
+pricingLabel:"الأسعار",pricingTitle:"ابدأ مجاناً.",
+plan1Name:"مجاني",plan1Desc:"للاكتشاف",plan1F1:"5 مستندات / شهر",plan1F2:"فواتير وعروض أسعار PDF",plan1F3:"إرسال تلقائي للعميل",plan1F4:"ترقيم تلقائي",plan1F5:"واتساب أو تيليجرام",
+plan2Name:"احترافي",plan2Desc:"مستقلون وشركات صغيرة",plan2F1:"مستندات غير محدودة",plan2F2:"شعار ومعلومات مخصصة",plan2F3:"سجل الفواتير والبحث",plan2F4:"دعم ذو أولوية",
+plan3Name:"أعمال",plan3Desc:"فرق وشركات",plan3F1:"كل مزايا الاحترافي",plan3F2:"متعدد المستخدمين (5)",plan3F3:"🔔 تنبيهات المناقصات",plan3F4:"تذكيرات دفع تلقائية",plan3F5:"لوحة تحكم وإحصائيات",plan3F6:"تصدير محاسبي (Excel/PDF)",plan3F7:"واجهة برمجة",
+planCta:"ابدأ الآن",perMonth:"فرنك/شهر",
+popularBadge:"★ الأكثر شعبية",
+payLabel:"طرق الدفع المقبولة",
+countriesLabel:"التوفر",countriesTitle:"متوفر بالفعل في 5 دول.",
+badgeActive:"نشط",
+soonLabel:'قريباً <span class="zone-badge zone-badge-soon">Coming soon</span>',
+soonLabel2:"قريباً",
+privacyText:"بياناتك مشفرة ومخزنة على خوادم آمنة. PaperBot لا يشارك أي معلومات شخصية مع أطراف ثالثة.",
+termsText:"باستخدام PaperBot، أنت توافق على شروط الاستخدام. الخدمة مقدمة \"كما هي\".",
+c_SN:"السنغال",c_CI:"كوت ديفوار",c_ML:"مالي",c_BF:"بوركينا فاسو",c_BJ:"بنين",c_TG:"توغو",c_GW:"غينيا بيساو",c_NE:"النيجر",
+c_CM:"الكاميرون",c_GA:"الغابون",c_TD:"تشاد",c_CG:"الكونغو",c_CF:"أفريقيا الوسطى",c_GQ:"غينيا الاستوائية",c_MA:"المغرب",
+faqLabel:"الأسئلة الشائعة",faqTitle:"أسئلة شائعة",
+faq1Q:"كيف يعمل بالضبط؟",faq1A:"أرسل \"مرحباً\" للبوت على واتساب أو تيليجرام. اكتب معلومات فاتورتك (عميل، منتجات، أسعار، رقم هاتف). البوت يُنشئ PDF ويرسله تلقائياً لعميلك. بدون تسجيل.",
+faq2Q:"هل الفواتير متوافقة قانونياً؟",faq2A:"نعم. يطبق PaperBot تلقائياً الضريبة والمتطلبات القانونية والترقيم المتوافق مع معايير SYSCOHADA لكل بلد.",
+faq3Q:"هل تُرسل الفاتورة فعلاً للعميل؟",faq3A:"نعم. أضف رقم هاتف عميلك في الرسالة. يرسل PaperBot الفاتورة PDF تلقائياً عبر واتساب أو SMS.",
+faq4Q:"هل بياناتي آمنة؟",faq4A:"نعم. بياناتك مشفرة ومخزنة على خوادم آمنة. PaperBot لا يشارك معلوماتك مع أطراف ثالثة. فواتيرك تبقى سرية.",
+faq5Q:"هل يمكنني تعديل أو إلغاء فاتورة؟",faq5A:'نعم. أرسل "تعديل" أو "إلغاء" متبوعاً برقم الفاتورة. PaperBot ينشئ إشعار دائن أو فاتورة تصحيحية.',
+faq6Q:"ما هي طرق الدفع للاشتراك؟",faq6A:"Orange Money و Wave و MTN MoMo. الدفع يتم مباشرة عبر المحفظة الإلكترونية. لا حاجة لبطاقة بنكية.",
+ctaLabel:"مستعد؟",ctaTitle:"أول فاتورة في 10 ثوانٍ.",ctaSub:"مجاني. بدون تسجيل.",
+footerText:"صُنع بـ ❤️ لأفريقيا",
+cancelInfo:"لإلغاء اشتراكك، أرسل ببساطة كلمة « إلغاء » إلى البوت على واتساب أو تيليجرام. الإلغاء فوري ومجاني.",
+legalMentions:"إشعار قانوني",legalPrivacy:"سياسة الخصوصية",legalTerms:"شروط الاستخدام"
+},
+pt:{
+heroTitle:'Envie uma mensagem,<br>receba uma <span class="accent">fatura</span>.',
+heroSub:"Faturas e orçamentos PDF conformes em 10 segundos. Digite suas infos no WhatsApp ou Telegram, PaperBot gera o documento e envia ao seu cliente.",
+ctaWA:"WhatsApp",ctaTG:"Telegram",
+waStatus:"online",
+chatUser:"Fatura João Silva, tel 923 456 789, 3 sacos cimento 2500 AOA, entrega 1000 AOA",
+chatBot:"✅ Fatura gerada! Enviada para João no 923 456 789",
+pdfCompliant:"Conforme fiscal",
+sentTo:"→ Enviado para 923 456 789",
+waPlaceholder:"Digite suas infos aqui...",
+speed:"10 segundos",
+howLabel:"Como funciona",
+howTitle:"Três passos. Zero complicação.",
+step1Title:"Envie suas infos",step1Desc:"Digite os detalhes: cliente, itens, preços, número de telefone. Como texto livre.",
+step2Title:"PaperBot gera",step2Desc:"O bot organiza tudo, aplica IVA e exigências legais do seu país. Em 10 segundos.",
+step3Title:"O cliente recebe",step3Desc:"A fatura PDF é enviada automaticamente para o número de telefone do seu cliente.",
+pricingLabel:"Preços",pricingTitle:"Comece de graça.",
+plan1Name:"Gratuito",plan1Desc:"Para descobrir",plan1F1:"5 documentos / mês",plan1F2:"Faturas e orçamentos PDF",plan1F3:"Envio auto ao cliente",plan1F4:"Numeração automática",plan1F5:"WhatsApp ou Telegram",
+plan2Name:"Pro",plan2Desc:"Freelancers e PMEs",plan2F1:"Documentos ilimitados",plan2F2:"Logo e infos personalizados",plan2F3:"Histórico e pesquisa",plan2F4:"Suporte prioritário",
+plan3Name:"Business",plan3Desc:"Equipes e empresas",plan3F1:"Tudo do Pro",plan3F2:"Multi-usuários (5)",plan3F3:"🔔 Alertas de licitações",plan3F4:"Lembretes de pagamento auto",plan3F5:"Painel e estatísticas",plan3F6:"Exportação contábil (Excel/PDF)",plan3F7:"API de integração",
+planCta:"Começar",perMonth:"FCFA/mês",
+popularBadge:"★ Popular",
+payLabel:"Métodos de pagamento aceitos",
+countriesLabel:"Disponibilidade",countriesTitle:"Já disponível em 5 países.",
+badgeActive:"Ativo",
+soonLabel:'Em breve <span class="zone-badge zone-badge-soon">Coming soon</span>',
+soonLabel2:"Em breve",
+privacyText:"Seus dados são criptografados e armazenados em servidores seguros. PaperBot nunca compartilha informações pessoais com terceiros.",
+termsText:"Ao usar o PaperBot, você aceita nossos termos de uso. O serviço é fornecido \"como está\".",
+c_SN:"Senegal",c_CI:"Costa do Marfim",c_ML:"Mali",c_BF:"Burkina Faso",c_BJ:"Benim",c_TG:"Togo",c_GW:"Guiné-Bissau",c_NE:"Níger",
+c_CM:"Camarões",c_GA:"Gabão",c_TD:"Chade",c_CG:"Congo",c_CF:"Centro-África",c_GQ:"Guiné Eq.",c_MA:"Marrocos",
+faqLabel:"FAQ",faqTitle:"Perguntas frequentes",
+faq1Q:"Como funciona exatamente?",faq1A:"Envie \"Olá\" ao bot no WhatsApp ou Telegram. Digite as infos da fatura (cliente, itens, preços, telefone). O bot gera o PDF e envia automaticamente ao cliente. Sem cadastro.",
+faq2Q:"As faturas são conformes?",faq2A:"Sim. PaperBot aplica automaticamente IVA, menções legais e numeração conforme SYSCOHADA e regras fiscais de cada país.",
+faq3Q:"A fatura é realmente enviada ao cliente?",faq3A:"Sim. Inclua o número de telefone do cliente na mensagem. PaperBot envia automaticamente o PDF por WhatsApp ou SMS.",
+faq4Q:"Meus dados estão seguros?",faq4A:"Sim. Seus dados são criptografados e armazenados em servidores seguros. PaperBot nunca compartilha suas informações com terceiros. Suas faturas permanecem confidenciais.",
+faq5Q:"Posso modificar ou cancelar uma fatura?",faq5A:'Sim. Envie "modificar" ou "cancelar" seguido do número da fatura. PaperBot gera uma nota de crédito ou fatura corretiva.',
+faq6Q:"Quais formas de pagamento para a assinatura?",faq6A:"Orange Money, Wave e MTN MoMo. O pagamento é feito diretamente via mobile money. Nenhum cartão bancário necessário.",
+ctaLabel:"Pronto?",ctaTitle:"Sua primeira fatura em 10 segundos.",ctaSub:"Gratuito. Sem cadastro.",
+footerText:"Feito com ❤️ para a África",
+cancelInfo:"Para cancelar sua assinatura, envie simplesmente a palavra \"cancelar\" ao bot no WhatsApp ou Telegram. O cancelamento é imediato e gratuito.",
+legalMentions:"Aviso legal",legalPrivacy:"Política de privacidade",legalTerms:"Termos de uso"
+},
+sw:{
+heroTitle:'Tuma ujumbe,<br>pokea <span class="accent">ankara</span>.',
+heroSub:"Ankara na makadirio PDF kwa sekunde 10. Tuma maelezo yako kwenye WhatsApp au Telegram, PaperBot inatengeneza hati na kuituma kwa mteja wako.",
+ctaWA:"WhatsApp",ctaTG:"Telegram",
+waStatus:"mtandaoni",
+chatUser:"Ankara Juma Hassan, simu 0712 345 678, mifuko 3 saruji 1500 KES, usafirishaji 500 KES",
+chatBot:"✅ Ankara imetengenezwa! Imetumwa kwa Juma 0712 345 678",
+pdfCompliant:"Inazingatia kodi",
+sentTo:"→ Imetumwa kwa 0712 345 678",
+waPlaceholder:"Andika maelezo yako hapa...",
+speed:"sekunde 10",
+howLabel:"Inavyofanya kazi",
+howTitle:"Hatua tatu. Bila usumbufu.",
+step1Title:"Tuma maelezo",step1Desc:"Andika maelezo: mteja, bidhaa, bei, nambari ya simu. Kama maandishi huru.",
+step2Title:"PaperBot inatengeneza",step2Desc:"Bot inapanga kila kitu, inatumia VAT na mahitaji ya kisheria. Kwa sekunde 10.",
+step3Title:"Mteja anapokea",step3Desc:"Ankara PDF inatumwa moja kwa moja kwa nambari ya simu ya mteja wako.",
+pricingLabel:"Bei",pricingTitle:"Anza bure.",
+plan1Name:"Bure",plan1Desc:"Kugundua",plan1F1:"Hati 5 / mwezi",plan1F2:"Ankara na makadirio PDF",plan1F3:"Tuma auto kwa mteja",plan1F4:"Nambari otomatiki",plan1F5:"WhatsApp au Telegram",
+plan2Name:"Pro",plan2Desc:"Wajasiriamali na SME",plan2F1:"Hati zisizo na kikomo",plan2F2:"Logo na maelezo binafsi",plan2F3:"Historia na utafutaji",plan2F4:"Msaada wa kipaumbele",
+plan3Name:"Biashara",plan3Desc:"Timu na makampuni",plan3F1:"Kila kitu katika Pro",plan3F2:"Watumiaji wengi (5)",plan3F3:"🔔 Arifa za zabuni",plan3F4:"Vikumbusho vya malipo auto",plan3F5:"Dashibodi na takwimu",plan3F6:"Usafirishaji uhasibu (Excel/PDF)",plan3F7:"API ya kuunganisha",
+planCta:"Anza",perMonth:"FCFA/mwezi",
+popularBadge:"★ Maarufu",
+payLabel:"Njia za malipo zinazokubaliwa",
+countriesLabel:"Upatikanaji",countriesTitle:"Tayari inapatikana katika nchi 5.",
+badgeActive:"Hai",
+soonLabel:'Inakuja hivi karibuni <span class="zone-badge zone-badge-soon">Coming soon</span>',
+soonLabel2:"Karibuni",
+privacyText:"Data yako imesimbwa na kuhifadhiwa kwenye seva salama. PaperBot haishiriki maelezo yako na watu wengine.",
+termsText:"Kwa kutumia PaperBot, unakubali masharti yetu ya matumizi.",
+c_SN:"Senegali",c_CI:"Côte d'Ivoire",c_ML:"Mali",c_BF:"Burkina Faso",c_BJ:"Benin",c_TG:"Togo",c_GW:"Guinea-Bissau",c_NE:"Niger",
+c_CM:"Kamerun",c_GA:"Gabon",c_TD:"Chad",c_CG:"Congo",c_CF:"Afrika ya Kati",c_GQ:"Guinea ya Ikweta",c_MA:"Moroko",
+faqLabel:"Maswali",faqTitle:"Maswali yanayoulizwa mara kwa mara",
+faq1Q:"Inafanya kazi vipi?",faq1A:"Tuma \"Habari\" kwa bot kwenye WhatsApp au Telegram. Andika maelezo ya ankara (mteja, bidhaa, bei, nambari ya simu). Bot inatengeneza PDF na kutuma moja kwa moja kwa mteja wako. Hakuna usajili.",
+faq2Q:"Ankara zinazingatia sheria?",faq2A:"Ndiyo. PaperBot inatumia VAT, mahitaji ya kisheria na nambari zinazozingatia sheria za kodi kwa kila nchi.",
+faq3Q:"Ankara inatumwa kweli kwa mteja?",faq3A:"Ndiyo. Jumuisha nambari ya simu ya mteja wako katika ujumbe. PaperBot inatuma ankara PDF moja kwa moja kupitia WhatsApp au SMS.",
+faq4Q:"Data yangu iko salama?",faq4A:"Ndiyo. Data yako imesimbwa na kuhifadhiwa kwenye seva salama. PaperBot haishiriki maelezo yako na watu wengine. Ankara zako zinabaki siri.",
+faq5Q:"Ninaweza kubadilisha au kufuta ankara?",faq5A:'Ndiyo. Tuma "badilisha" au "futa" ikifuatiwa na nambari ya ankara. PaperBot inatengeneza ankara ya kusahihisha.',
+faq6Q:"Njia gani za malipo kwa usajili?",faq6A:"Orange Money, Wave na MTN MoMo. Malipo yanafanywa moja kwa moja kupitia mobile money. Hakuna kadi ya benki inayohitajika.",
+ctaLabel:"Uko tayari?",ctaTitle:"Ankara yako ya kwanza kwa sekunde 10.",ctaSub:"Bure. Bila usajili.",
+footerText:"Imetengenezwa kwa ❤️ kwa Afrika",
+cancelInfo:"Kufuta usajili wako, tuma neno \"futa\" kwa bot kwenye WhatsApp au Telegram. Ufutaji ni wa papo hapo na bila malipo.",
+legalMentions:"Taarifa za kisheria",legalPrivacy:"Sera ya faragha",legalTerms:"Masharti ya matumizi"
+}
+};
+
+// ===== LANGUAGE =====
+let currentLang=localStorage.getItem('pb-lang')||'fr';
+const langNames={fr:'FR',en:'EN',ar:'AR',pt:'PT',sw:'SW'};
+
+// IP-based auto-detect
+const countryLangMap={
+SN:'fr',CI:'fr',ML:'fr',BF:'fr',BJ:'fr',TG:'fr',GN:'fr',NE:'fr',CM:'fr',CG:'fr',GA:'fr',TD:'fr',CF:'fr',GQ:'fr',CD:'fr',MG:'fr',
+NG:'en',GH:'en',
+MA:'ar',TN:'ar',DZ:'ar',MR:'ar',
+AO:'pt',MZ:'pt',CV:'pt',GW:'pt',
+KE:'sw',TZ:'sw',UG:'sw',RW:'sw'
+};
+
+(async function detectLang(){
+if(localStorage.getItem('pb-lang'))return; // user already chose
+try{
+const r=await fetch('https://ipapi.co/json/',{signal:AbortSignal.timeout(3000)});
+const d=await r.json();
+const lang=countryLangMap[d.country_code]||'en';
+setLang(lang);
+}catch(e){/* fallback: keep fr */}
+})();
+
+function setLang(lang){
+currentLang=lang;
+localStorage.setItem('pb-lang',lang);
+document.documentElement.lang=lang;
+document.documentElement.dir=lang==='ar'?'rtl':'ltr';
+document.getElementById('currentLang').textContent=langNames[lang];
+document.querySelectorAll('[data-i18n]').forEach(el=>{
+const k=el.getAttribute('data-i18n');
+if(T[lang]&&T[lang][k]){
+el.innerHTML=T[lang][k];
+}
+});
+const pop=document.querySelector('.pricing-card.popular');
+if(pop&&T[lang])pop.setAttribute('data-badge',T[lang].popularBadge);
+document.querySelectorAll('.lang-dd button').forEach(b=>b.classList.remove('active'));
+const titles={fr:"PaperBot — Factures & Devis",en:"PaperBot — Invoices & Quotes",ar:"PaperBot — فواتير وعروض أسعار",pt:"PaperBot — Faturas e Orçamentos",sw:"PaperBot — Ankara na Makadirio"};
+document.title=titles[lang]||titles.fr;
+closeLangDD();
+}
+function toggleLangDD(){document.getElementById('langDD').classList.toggle('open')}
+function closeLangDD(){document.getElementById('langDD').classList.remove('open')}
+document.addEventListener('click',e=>{if(!e.target.closest('.lang-sw'))closeLangDD()});
+
+// ===== THEME =====
+function toggleTheme(){
+const d=document.documentElement.getAttribute('data-theme')==='dark';
+document.documentElement.setAttribute('data-theme',d?'':'dark');
+localStorage.setItem('pb-theme',d?'light':'dark');
+document.getElementById('themeBtn').innerHTML=d
+?'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+}
+
+// ===== FAQ =====
+function toggleFaq(btn){btn.closest('.faq-item').classList.toggle('open')}
+
+// ===== REVEAL =====
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// ===== CHAT TYPING ANIMATION =====
+let chatAnimRunning=false;
+let chatAnimTimer=null;
+
+function typeText(el,text,speed=30){
+return new Promise(resolve=>{
+let i=0;
+const cursor=document.createElement('span');
+cursor.className='type-cursor';
+el.textContent='';
+el.appendChild(cursor);
+function tick(){
+if(i<text.length){
+cursor.before(document.createTextNode(text[i]));
+i++;
+chatAnimTimer=setTimeout(tick,speed);
+}else{
+cursor.remove();
+resolve();
+}
+}
+tick();
+});
+}
+
+function createBubble(cls){
+const d=document.createElement('div');
+d.className=cls+' chat-hidden';
+return d;
+}
+
+async function runChatAnim(){
+if(chatAnimRunning)return;
+chatAnimRunning=true;
+const chat=document.getElementById('waChat');
+if(!chat)return;
+chat.innerHTML='';
+const t=T[currentLang]||T.fr;
+
+// 1) User bubble - typing
+const userBubble=createBubble('chat-bubble chat-user');
+const userSpan=document.createElement('span');
+const userTime=document.createElement('div');
+userTime.className='chat-time';
+userTime.textContent='9:41';
+userBubble.appendChild(userSpan);
+userBubble.appendChild(userTime);
+chat.appendChild(userBubble);
+await new Promise(r=>setTimeout(r,400));
+userBubble.classList.remove('chat-hidden');
+userBubble.classList.add('chat-show');
+await new Promise(r=>setTimeout(r,200));
+await typeText(userSpan,t.chatUser,25);
+
+// 2) Typing indicator
+await new Promise(r=>setTimeout(r,400));
+const typing=document.createElement('div');
+typing.className='typing chat-hidden';
+typing.innerHTML='<span></span><span></span><span></span>';
+chat.appendChild(typing);
+typing.classList.remove('chat-hidden');
+typing.classList.add('typing-show');
+chat.scrollTop=chat.scrollHeight;
+
+// 3) Bot response replaces typing
+await new Promise(r=>setTimeout(r,1200));
+typing.remove();
+const botBubble=createBubble('chat-bubble chat-bot');
+const botSpan=document.createElement('span');
+const botTime=document.createElement('div');
+botTime.className='chat-time';
+botTime.textContent='9:41';
+botBubble.appendChild(botSpan);
+botBubble.appendChild(botTime);
+chat.appendChild(botBubble);
+botBubble.classList.remove('chat-hidden');
+botBubble.classList.add('chat-show');
+await new Promise(r=>setTimeout(r,150));
+await typeText(botSpan,t.chatBot,20);
+chat.scrollTop=chat.scrollHeight;
+
+// 4) PDF attachment
+await new Promise(r=>setTimeout(r,350));
+const pdf=createBubble('chat-pdf');
+pdf.innerHTML='<div class="pdf-icon">PDF</div><div class="pdf-info"><div class="pdf-name">Facture_PRO_001.pdf</div><div class="pdf-size">17 KB · '+(t.pdfCompliant)+'</div></div>';
+chat.appendChild(pdf);
+pdf.classList.remove('chat-hidden');
+pdf.classList.add('chat-show');
+chat.scrollTop=chat.scrollHeight;
+
+// 5) Sent badge
+await new Promise(r=>setTimeout(r,400));
+const badge=createBubble('send-badge');
+badge.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg><span>'+(t.sentTo)+'</span>';
+chat.appendChild(badge);
+badge.classList.remove('chat-hidden');
+badge.classList.add('chat-show');
+chat.scrollTop=chat.scrollHeight;
+
+chatAnimRunning=false;
+}
+
+// Replay on language change
+const origSetLang=setLang;
+setLang=function(lang){
+origSetLang(lang);
+if(chatAnimTimer)clearTimeout(chatAnimTimer);
+chatAnimRunning=false;
+setTimeout(runChatAnim,200);
+};
+
+// Start on hero visible
+const heroObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){runChatAnim();heroObs.unobserve(e.target)}})},{threshold:.2});
+const heroEl=document.getElementById('hero');
+if(heroEl)heroObs.observe(heroEl);
+
+// ===== LEGAL POPUP =====
+function toggleLegalPopup(e,section){
+e.preventDefault();
+const popup=document.getElementById('legalPopup');
+const isOpen=popup.classList.contains('open');
+popup.classList.toggle('open');
+if(!isOpen&&section){
+const target=document.getElementById('legal-'+section);
+if(target)target.scrollIntoView({behavior:'smooth',block:'start'});
+}
+}
+document.addEventListener('click',e=>{
+const popup=document.getElementById('legalPopup');
+if(popup&&popup.classList.contains('open')&&!e.target.closest('.footer-legal-wrap')){
+popup.classList.remove('open');
+}
+});
+
+// ===== INIT =====
+(function(){
+if(localStorage.getItem('pb-theme')==='dark'){
+document.documentElement.setAttribute('data-theme','dark');
+document.getElementById('themeBtn').innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+}
+if(currentLang!=='fr')setLang(currentLang);
+})();
+</script>
+</body>
+</html>
