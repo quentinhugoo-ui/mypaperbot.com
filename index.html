@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700&family=Fraunces:opsz,wght@9..144,700;9..144,800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg width='28' height='28' viewBox='0 0 28 28' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='28' height='28' rx='7' fill='%230A6847'/%3E%3Cpath d='M7 9h14M7 13h10M7 17h12M19 15l3 3-3 3' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -227,6 +228,32 @@ footer{background:var(--c-bg);border-top:1px solid var(--c-border);padding:.75re
 .footer-legal-popup h4{font-size:.75rem;font-weight:700;color:var(--c-green);margin-bottom:.3rem}
 .footer-legal-popup p{font-size:.7rem;color:var(--c-text2);line-height:1.55;margin-bottom:.5rem}
 .footer-legal-popup hr{border:none;border-top:1px solid var(--c-border);margin:.6rem 0}
+.footer-legal-popup .legal-section{display:none}
+.footer-legal-popup .legal-section.active{display:block}
+
+/* Contact dropdown */
+.contact-sw{position:relative}
+.contact-btn{background:var(--c-bg2);border:1px solid var(--c-border);border-radius:var(--r);padding:.35rem .65rem;font-size:.78rem;font-family:var(--font-body);color:var(--c-text);cursor:pointer;display:flex;align-items:center;gap:.3rem;transition:all .2s;text-decoration:none}
+.contact-btn:hover{border-color:var(--c-green);color:var(--c-green)}
+.contact-dd{display:none;position:absolute;top:110%;right:0;background:var(--c-bg);border:1px solid var(--c-border);border-radius:var(--r2);box-shadow:var(--shadow),0 8px 32px rgba(0,0,0,.12);padding:1.25rem;width:300px;z-index:200}
+[dir="rtl"] .contact-dd{right:auto;left:0}
+.contact-dd.open{display:block}
+.contact-dd h4{font-family:var(--font-display);font-size:.95rem;font-weight:700;margin-bottom:.75rem;color:var(--c-text)}
+.contact-field{margin-bottom:.6rem}
+.contact-field label{display:block;font-size:.72rem;font-weight:600;color:var(--c-text2);margin-bottom:.2rem}
+.contact-field input,.contact-field textarea{width:100%;padding:.45rem .6rem;border:1px solid var(--c-border);border-radius:var(--r);font-family:var(--font-body);font-size:.82rem;color:var(--c-text);background:var(--c-bg);transition:border .2s;resize:vertical}
+.contact-field input:focus,.contact-field textarea:focus{outline:none;border-color:var(--c-green)}
+.contact-field textarea{min-height:60px}
+.contact-field .phone-row{display:flex;align-items:center;gap:.4rem}
+.contact-field .phone-row input{flex:1}
+.contact-field .phone-icons{display:flex;gap:.3rem;flex-shrink:0}
+.contact-field .phone-icons a{color:var(--c-text3);transition:color .2s;line-height:0}
+.contact-field .phone-icons a:hover{color:var(--c-green)}
+.contact-submit{width:100%;padding:.5rem;background:var(--c-green);color:#fff;border:none;border-radius:var(--r);font-family:var(--font-body);font-size:.82rem;font-weight:600;cursor:pointer;transition:background .2s}
+.contact-submit:hover{background:var(--c-green-dark)}
+.contact-success{display:none;text-align:center;padding:.5rem;font-size:.82rem;color:var(--c-green);font-weight:600}
+@media(min-width:769px){.contact-sw:hover .contact-dd{display:block}}
+@media(max-width:480px){.contact-dd{right:-60px;width:260px}}
 .footer-right{color:var(--c-text3);font-size:.68rem;opacity:.5;white-space:nowrap}
 @media(max-width:480px){.footer-inner{flex-direction:column;gap:.4rem;text-align:center}.footer-legal-popup{left:auto;right:-20px;transform:none;width:280px}}
 
@@ -273,6 +300,41 @@ PaperBot
 <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
 <span data-i18n="ctaTG">Telegram</span>
 </a>
+</div>
+<div class="contact-sw">
+<button class="contact-btn" onclick="toggleContactDD()" data-i18n="contactBtn">Contact</button>
+<div class="contact-dd" id="contactDD">
+<h4 data-i18n="contactTitle">Nous contacter</h4>
+<form id="contactForm" action="https://formsubmit.co/hello@mypaperbot.com" method="POST">
+<input type="hidden" name="_subject" value="PaperBot - Nouveau message">
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_next" value="https://mypaperbot.com">
+<div class="contact-field">
+<label data-i18n="contactName">Nom</label>
+<input type="text" name="name" required>
+</div>
+<div class="contact-field">
+<label data-i18n="contactPhone">Téléphone (optionnel)</label>
+<div class="phone-row">
+<input type="tel" name="phone">
+<div class="phone-icons">
+<a href="https://wa.me/221781234567" target="_blank" aria-label="WhatsApp"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg></a>
+<a href="https://t.me/app_PaperBot" target="_blank" aria-label="Telegram"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
+</div>
+</div>
+</div>
+<div class="contact-field">
+<label data-i18n="contactEmail">Email (optionnel)</label>
+<input type="email" name="email">
+</div>
+<div class="contact-field">
+<label data-i18n="contactMsg">Message</label>
+<textarea name="message" required></textarea>
+</div>
+<button type="submit" class="contact-submit" data-i18n="contactSend">Envoyer</button>
+</form>
+<div class="contact-success" id="contactSuccess" data-i18n="contactOk">Message envoyé !</div>
+</div>
 </div>
 <div class="lang-sw">
 <button class="lang-btn" onclick="toggleLangDD()" aria-label="Language">
@@ -552,17 +614,15 @@ PaperBot
 <span class="footer-sep">·</span>
 <a href="#" class="footer-legal-trigger" data-i18n="legalTerms" onclick="toggleLegalPopup(event,'terms')">CGU</a>
 <div class="footer-legal-popup" id="legalPopup">
-<div id="legal-mentions">
+<div id="legal-mentions" class="legal-section">
 <h4 data-i18n="legalMentions">Mentions légales</h4>
-<p>PaperBot SAS · Dakar, Sénégal<br>NINEA : En cours · RC : En cours<br>Contact : contact@paperbot.africa</p>
+<p>PaperBot SAS · Dakar, Sénégal<br>NINEA : En cours · RC : En cours<br>Contact : hello@mypaperbot.com</p>
 </div>
-<hr>
-<div id="legal-privacy">
+<div id="legal-privacy" class="legal-section">
 <h4 data-i18n="legalPrivacy">Politique de confidentialité</h4>
 <p data-i18n="privacyText">Vos données sont chiffrées et stockées sur des serveurs sécurisés. PaperBot ne partage aucune information personnelle avec des tiers. Les factures sont conservées 10 ans conformément aux obligations SYSCOHADA.</p>
 </div>
-<hr>
-<div id="legal-terms">
+<div id="legal-terms" class="legal-section">
 <h4 data-i18n="legalTerms">CGU</h4>
 <p data-i18n="termsText">En utilisant PaperBot, vous acceptez nos conditions d'utilisation. Le service est fourni "en l'état". PaperBot se réserve le droit de modifier les tarifs avec un préavis de 30 jours.</p>
 <p data-i18n="cancelInfo" style="margin-top:.4rem;font-style:italic">Pour résilier votre abonnement, envoyez simplement le mot « résilier » au bot sur WhatsApp ou Telegram. La résiliation est immédiate et sans frais.</p>
@@ -618,7 +678,8 @@ faq6Q:"Quels moyens de paiement pour l'abonnement ?",faq6A:"Orange Money, Wave e
 ctaLabel:"Prêt ?",ctaTitle:"Votre première facture en 10 secondes.",ctaSub:"Gratuit. Sans inscription.",
 footerText:"Fait avec ❤️ pour l'Afrique",
 cancelInfo:"Pour résilier votre abonnement, envoyez simplement le mot « résilier » au bot sur WhatsApp ou Telegram. La résiliation est immédiate et sans frais.",
-legalMentions:"Mentions légales",legalPrivacy:"Politique de confidentialité",legalTerms:"CGU"
+legalMentions:"Mentions légales",legalPrivacy:"Politique de confidentialité",legalTerms:"CGU",
+contactBtn:"Contact",contactTitle:"Nous contacter",contactName:"Nom",contactPhone:"Téléphone (optionnel)",contactEmail:"Email (optionnel)",contactMsg:"Message",contactSend:"Envoyer",contactOk:"Message envoyé !"
 },
 en:{
 heroTitle:'Send a message,<br>get an <span class="accent">invoice</span>.',
@@ -661,7 +722,8 @@ faq6Q:"What payment methods for the subscription?",faq6A:"Orange Money, Wave and
 ctaLabel:"Ready?",ctaTitle:"Your first invoice in 10 seconds.",ctaSub:"Free. No sign-up.",
 footerText:"Made with ❤️ for Africa",
 cancelInfo:"To cancel your subscription, simply send the word \"cancel\" to the bot on WhatsApp or Telegram. Cancellation is immediate and free of charge.",
-legalMentions:"Legal notice",legalPrivacy:"Privacy policy",legalTerms:"Terms of use"
+legalMentions:"Legal notice",legalPrivacy:"Privacy policy",legalTerms:"Terms of use",
+contactBtn:"Contact",contactTitle:"Contact us",contactName:"Name",contactPhone:"Phone (optional)",contactEmail:"Email (optional)",contactMsg:"Message",contactSend:"Send",contactOk:"Message sent!"
 },
 ar:{
 heroTitle:'أرسل رسالة،<br>واحصل على <span class="accent">فاتورة</span>.',
@@ -704,7 +766,8 @@ faq6Q:"ما هي طرق الدفع للاشتراك؟",faq6A:"Orange Money و Wa
 ctaLabel:"مستعد؟",ctaTitle:"أول فاتورة في 10 ثوانٍ.",ctaSub:"مجاني. بدون تسجيل.",
 footerText:"صُنع بـ ❤️ لأفريقيا",
 cancelInfo:"لإلغاء اشتراكك، أرسل ببساطة كلمة « إلغاء » إلى البوت على واتساب أو تيليجرام. الإلغاء فوري ومجاني.",
-legalMentions:"إشعار قانوني",legalPrivacy:"سياسة الخصوصية",legalTerms:"شروط الاستخدام"
+legalMentions:"إشعار قانوني",legalPrivacy:"سياسة الخصوصية",legalTerms:"شروط الاستخدام",
+contactBtn:"اتصل",contactTitle:"اتصل بنا",contactName:"الاسم",contactPhone:"الهاتف (اختياري)",contactEmail:"البريد الإلكتروني (اختياري)",contactMsg:"الرسالة",contactSend:"إرسال",contactOk:"تم إرسال الرسالة!"
 },
 pt:{
 heroTitle:'Envie uma mensagem,<br>receba uma <span class="accent">fatura</span>.',
@@ -747,7 +810,8 @@ faq6Q:"Quais formas de pagamento para a assinatura?",faq6A:"Orange Money, Wave e
 ctaLabel:"Pronto?",ctaTitle:"Sua primeira fatura em 10 segundos.",ctaSub:"Gratuito. Sem cadastro.",
 footerText:"Feito com ❤️ para a África",
 cancelInfo:"Para cancelar sua assinatura, envie simplesmente a palavra \"cancelar\" ao bot no WhatsApp ou Telegram. O cancelamento é imediato e gratuito.",
-legalMentions:"Aviso legal",legalPrivacy:"Política de privacidade",legalTerms:"Termos de uso"
+legalMentions:"Aviso legal",legalPrivacy:"Política de privacidade",legalTerms:"Termos de uso",
+contactBtn:"Contato",contactTitle:"Fale conosco",contactName:"Nome",contactPhone:"Telefone (opcional)",contactEmail:"Email (opcional)",contactMsg:"Mensagem",contactSend:"Enviar",contactOk:"Mensagem enviada!"
 },
 sw:{
 heroTitle:'Tuma ujumbe,<br>pokea <span class="accent">ankara</span>.',
@@ -790,7 +854,8 @@ faq6Q:"Njia gani za malipo kwa usajili?",faq6A:"Orange Money, Wave na MTN MoMo. 
 ctaLabel:"Uko tayari?",ctaTitle:"Ankara yako ya kwanza kwa sekunde 10.",ctaSub:"Bure. Bila usajili.",
 footerText:"Imetengenezwa kwa ❤️ kwa Afrika",
 cancelInfo:"Kufuta usajili wako, tuma neno \"futa\" kwa bot kwenye WhatsApp au Telegram. Ufutaji ni wa papo hapo na bila malipo.",
-legalMentions:"Taarifa za kisheria",legalPrivacy:"Sera ya faragha",legalTerms:"Masharti ya matumizi"
+legalMentions:"Taarifa za kisheria",legalPrivacy:"Sera ya faragha",legalTerms:"Masharti ya matumizi",
+contactBtn:"Wasiliana",contactTitle:"Wasiliana nasi",contactName:"Jina",contactPhone:"Simu (hiari)",contactEmail:"Barua pepe (hiari)",contactMsg:"Ujumbe",contactSend:"Tuma",contactOk:"Ujumbe umetumwa!"
 }
 };
 
@@ -810,10 +875,16 @@ KE:'sw',TZ:'sw',UG:'sw',RW:'sw'
 (async function detectLang(){
 if(localStorage.getItem('pb-lang'))return; // user already chose
 try{
+let cc;
+try{
 const r=await fetch('https://ipapi.co/json/',{signal:AbortSignal.timeout(3000)});
-const d=await r.json();
-const lang=countryLangMap[d.country_code]||'en';
-setLang(lang);
+const d=await r.json();cc=d.country_code;
+}catch(e){
+const r2=await fetch('https://ip2c.org/s',{signal:AbortSignal.timeout(3000)});
+const t=await r2.text();
+if(t&&t.charAt(0)==='1')cc=t.split(';')[1];
+}
+if(cc){const lang=countryLangMap[cc]||'en';setLang(lang)}
 }catch(e){/* fallback: keep fr */}
 })();
 
@@ -977,19 +1048,27 @@ if(heroEl)heroObs.observe(heroEl);
 function toggleLegalPopup(e,section){
 e.preventDefault();
 const popup=document.getElementById('legalPopup');
-const isOpen=popup.classList.contains('open');
-popup.classList.toggle('open');
-if(!isOpen&&section){
+const wasOpen=popup.classList.contains('open');
+const currentSection=popup.getAttribute('data-active');
+// If clicking the same section that's open, close it
+if(wasOpen&&currentSection===section){popup.classList.remove('open');popup.removeAttribute('data-active');return}
+// Show only the target section
+popup.querySelectorAll('.legal-section').forEach(s=>s.classList.remove('active'));
 const target=document.getElementById('legal-'+section);
-if(target)target.scrollIntoView({behavior:'smooth',block:'start'});
-}
+if(target)target.classList.add('active');
+popup.classList.add('open');
+popup.setAttribute('data-active',section);
 }
 document.addEventListener('click',e=>{
 const popup=document.getElementById('legalPopup');
 if(popup&&popup.classList.contains('open')&&!e.target.closest('.footer-legal-wrap')){
-popup.classList.remove('open');
+popup.classList.remove('open');popup.removeAttribute('data-active');
 }
 });
+
+// ===== CONTACT DROPDOWN =====
+function toggleContactDD(){document.getElementById('contactDD').classList.toggle('open')}
+document.addEventListener('click',e=>{if(!e.target.closest('.contact-sw'))document.getElementById('contactDD').classList.remove('open')});
 
 // ===== INIT =====
 (function(){
