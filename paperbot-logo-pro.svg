@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="proGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0D9488;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#046345;stop-opacity:1"/>
+    </linearGradient>
+  </defs>
+  <rect width="100" height="100" rx="25" fill="url(#proGrad)"/>
+  <path d="M42 16 Q50 10 58 16" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.9"/>
+  <path d="M46 22 Q50 18 54 22" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+  <rect x="22" y="32" width="56" height="15" rx="7.5" fill="white"/>
+  <circle cx="41" cy="39.5" r="4.5" fill="#0D9488"/>
+  <circle cx="59" cy="39.5" r="4.5" fill="#0D9488"/>
+  <circle cx="42.5" cy="38" r="1.5" fill="white"/>
+  <circle cx="60.5" cy="38" r="1.5" fill="white"/>
+  <rect x="22" y="55" width="28" height="10" rx="5" fill="white"/>
+  <rect x="22" y="74" width="44" height="10" rx="5" fill="white" opacity="0.8"/>
+</svg>
