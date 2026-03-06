@@ -231,14 +231,7 @@ footer{background:var(--c-bg);border-top:1px solid var(--c-border);padding:.75re
 .footer-legal-popup .legal-section{display:none}
 .footer-legal-popup .legal-section.active{display:block}
 
-/* Contact dropdown */
-.contact-sw{position:relative}
-.contact-btn{background:var(--c-bg2);border:1px solid var(--c-border);border-radius:var(--r);padding:.35rem .65rem;font-size:.78rem;font-family:var(--font-body);color:var(--c-text);cursor:pointer;display:flex;align-items:center;gap:.3rem;transition:all .2s;text-decoration:none}
-.contact-btn:hover{border-color:var(--c-green);color:var(--c-green)}
-.contact-dd{display:none;position:absolute;top:110%;right:0;background:var(--c-bg);border:1px solid var(--c-border);border-radius:var(--r2);box-shadow:var(--shadow),0 8px 32px rgba(0,0,0,.12);padding:1.25rem;width:300px;z-index:200}
-[dir="rtl"] .contact-dd{right:auto;left:0}
-.contact-dd.open{display:block}
-.contact-dd h4{font-family:var(--font-display);font-size:.95rem;font-weight:700;margin-bottom:.75rem;color:var(--c-text)}
+/* Contact form fields */
 .contact-field{margin-bottom:.6rem}
 .contact-field label{display:block;font-size:.72rem;font-weight:600;color:var(--c-text2);margin-bottom:.2rem}
 .contact-field input,.contact-field textarea{width:100%;padding:.45rem .6rem;border:1px solid var(--c-border);border-radius:var(--r);font-family:var(--font-body);font-size:.82rem;color:var(--c-text);background:var(--c-bg);transition:border .2s;resize:vertical}
@@ -252,8 +245,36 @@ footer{background:var(--c-bg);border-top:1px solid var(--c-border);padding:.75re
 .contact-submit{width:100%;padding:.5rem;background:var(--c-green);color:#fff;border:none;border-radius:var(--r);font-family:var(--font-body);font-size:.82rem;font-weight:600;cursor:pointer;transition:background .2s}
 .contact-submit:hover{background:var(--c-green-dark)}
 .contact-success{display:none;text-align:center;padding:.5rem;font-size:.82rem;color:var(--c-green);font-weight:600}
-@media(min-width:769px){.contact-sw:hover .contact-dd{display:block}}
-@media(max-width:480px){.contact-dd{right:-60px;width:260px}}
+
+/* Footer contact popup */
+.footer-contact-wrap{position:relative;display:flex;align-items:center}
+.footer-contact-popup{display:none;position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%);background:var(--c-bg);border:1px solid var(--c-border);border-radius:var(--r2);box-shadow:var(--shadow),0 8px 32px rgba(0,0,0,.12);padding:1.25rem;width:300px;z-index:200;text-align:left}
+.footer-contact-popup.open{display:block}
+.footer-contact-popup::after{content:'';position:absolute;bottom:-6px;left:50%;transform:translateX(-50%) rotate(45deg);width:10px;height:10px;background:var(--c-bg);border-right:1px solid var(--c-border);border-bottom:1px solid var(--c-border)}
+.footer-contact-popup h4{font-family:var(--font-display);font-size:.95rem;font-weight:700;margin-bottom:.75rem;color:var(--c-text)}
+@media(max-width:480px){.footer-contact-popup{left:auto;right:-20px;transform:none;width:260px}}
+
+/* Pro Gratuit nav button */
+.promo-nav-btn{background:linear-gradient(135deg,var(--c-gold),var(--c-gold-light));color:#fff;border:none;border-radius:var(--r);padding:.35rem .75rem;font-size:.75rem;font-weight:700;font-family:var(--font-body);cursor:pointer;transition:all .2s;white-space:nowrap}
+.promo-nav-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(217,119,6,.3)}
+
+/* Pro Gratuit overlay */
+.pro-overlay{display:none;position:fixed;inset:0;z-index:500}
+.pro-overlay.open{display:flex;align-items:flex-start;justify-content:center}
+.pro-overlay-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}
+.pro-overlay-content{position:relative;background:var(--c-bg);border-radius:var(--r2);box-shadow:0 20px 60px rgba(0,0,0,.25);padding:2rem;max-width:460px;width:90%;margin-top:80px;max-height:calc(100vh - 100px);overflow-y:auto;text-align:center;animation:proSlideIn .3s ease}
+@keyframes proSlideIn{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:none}}
+.pro-overlay-close{position:absolute;top:.75rem;right:.75rem;background:none;border:none;font-size:1.5rem;color:var(--c-text3);cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .2s}
+.pro-overlay-close:hover{background:var(--c-bg2);color:var(--c-text)}
+.pro-overlay-icon{font-size:3rem;margin-bottom:.5rem}
+.pro-overlay-title{font-family:var(--font-display);font-size:1.5rem;font-weight:800;color:var(--c-green);margin-bottom:.5rem;line-height:1.2}
+.pro-overlay-desc{color:var(--c-text2);font-size:.9rem;line-height:1.6;margin-bottom:1.25rem}
+.pro-overlay-steps{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.5rem;text-align:left}
+.pro-step{display:flex;align-items:center;gap:.6rem;font-size:.85rem;color:var(--c-text)}
+.pro-step-num{width:26px;height:26px;background:var(--c-green);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;flex-shrink:0}
+.pro-overlay-content .contact-field{text-align:left}
+.pro-overlay-submit{width:100%;justify-content:center;margin-top:.25rem}
+.pro-success{display:none;text-align:center;padding:1rem;font-size:.95rem;color:var(--c-green);font-weight:600}
 .footer-right{color:var(--c-text3);font-size:.68rem;opacity:.5;white-space:nowrap}
 @media(max-width:480px){.footer-inner{flex-direction:column;gap:.4rem;text-align:center}.footer-legal-popup{left:auto;right:-20px;transform:none;width:280px}}
 
@@ -296,46 +317,12 @@ PaperBot
 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
 <span data-i18n="ctaWA">WhatsApp</span>
 </a>
-<a href="https://t.me/paperbotXXX" class="nav-cta nav-cta-tg" aria-label="Telegram">
+<a href="https://t.me/app_PaperBot" class="nav-cta nav-cta-tg" aria-label="Telegram">
 <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
 <span data-i18n="ctaTG">Telegram</span>
 </a>
 </div>
-<div class="contact-sw">
-<button class="contact-btn" onclick="toggleContactDD()" data-i18n="contactBtn">Contact</button>
-<div class="contact-dd" id="contactDD">
-<h4 data-i18n="contactTitle">Nous contacter</h4>
-<form id="contactForm" action="https://formsubmit.co/hello@mypaperbot.com" method="POST">
-<input type="hidden" name="_subject" value="PaperBot - Nouveau message">
-<input type="hidden" name="_captcha" value="false">
-<input type="hidden" name="_next" value="https://mypaperbot.com">
-<div class="contact-field">
-<label data-i18n="contactName">Nom</label>
-<input type="text" name="name" required>
-</div>
-<div class="contact-field">
-<label data-i18n="contactPhone">Téléphone (optionnel)</label>
-<div class="phone-row">
-<input type="tel" name="phone">
-<div class="phone-icons">
-<a href="https://wa.me/221781234567" target="_blank" aria-label="WhatsApp"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg></a>
-<a href="https://t.me/app_PaperBot" target="_blank" aria-label="Telegram"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
-</div>
-</div>
-</div>
-<div class="contact-field">
-<label data-i18n="contactEmail">Email (optionnel)</label>
-<input type="email" name="email">
-</div>
-<div class="contact-field">
-<label data-i18n="contactMsg">Message</label>
-<textarea name="message" required></textarea>
-</div>
-<button type="submit" class="contact-submit" data-i18n="contactSend">Envoyer</button>
-</form>
-<div class="contact-success" id="contactSuccess" data-i18n="contactOk">Message envoyé !</div>
-</div>
-</div>
+<button class="promo-nav-btn" onclick="toggleProOverlay()" data-i18n="proNavBtn">Pro Gratuit</button>
 <div class="lang-sw">
 <button class="lang-btn" onclick="toggleLangDD()" aria-label="Language">
 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
@@ -368,7 +355,7 @@ PaperBot
 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
 <span data-i18n="ctaWA">WhatsApp</span>
 </a>
-<a href="https://t.me/paperbotXXX" class="btn btn-tg">
+<a href="https://t.me/app_PaperBot" class="btn btn-tg">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
 <span data-i18n="ctaTG">Telegram</span>
 </a>
@@ -592,7 +579,7 @@ PaperBot
 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
 <span data-i18n="ctaWA">WhatsApp</span>
 </a>
-<a href="https://t.me/paperbotXXX" class="btn btn-tg">
+<a href="https://t.me/app_PaperBot" class="btn btn-tg">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
 <span data-i18n="ctaTG">Telegram</span>
 </a>
@@ -630,9 +617,80 @@ PaperBot
 </div>
 </div>
 </div>
+<div class="footer-contact-wrap">
+<button class="footer-legal-trigger" onclick="toggleFooterContact()" data-i18n="contactBtn">Contact</button>
+<div class="footer-contact-popup" id="footerContactPopup">
+<h4 data-i18n="contactTitle">Nous contacter</h4>
+<form id="contactForm" action="https://formsubmit.co/hello@mypaperbot.com" method="POST">
+<input type="hidden" name="_subject" value="PaperBot - Nouveau message">
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_next" value="https://mypaperbot.com">
+<div class="contact-field">
+<label data-i18n="contactName">Nom</label>
+<input type="text" name="name" required>
+</div>
+<div class="contact-field">
+<label data-i18n="contactPhone">Téléphone (optionnel)</label>
+<div class="phone-row">
+<input type="tel" name="phone">
+<div class="phone-icons">
+<a href="https://wa.me/221781234567" target="_blank" aria-label="WhatsApp"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg></a>
+<a href="https://t.me/app_PaperBot" target="_blank" aria-label="Telegram"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
+</div>
+</div>
+</div>
+<div class="contact-field">
+<label data-i18n="contactEmail">Email (optionnel)</label>
+<input type="email" name="email">
+</div>
+<div class="contact-field">
+<label data-i18n="contactMsg">Message</label>
+<textarea name="message" required></textarea>
+</div>
+<button type="submit" class="contact-submit" data-i18n="contactSend">Envoyer</button>
+</form>
+<div class="contact-success" id="contactSuccess" data-i18n="contactOk">Message envoyé !</div>
+</div>
+</div>
+<span class="footer-sep">·</span>
 <div class="footer-right">© 2026</div>
 </div>
 </footer>
+
+<!-- Pro Gratuit Overlay -->
+<div class="pro-overlay" id="proOverlay">
+<div class="pro-overlay-backdrop" onclick="toggleProOverlay()"></div>
+<div class="pro-overlay-content">
+<button class="pro-overlay-close" onclick="toggleProOverlay()" aria-label="Fermer">&times;</button>
+<div class="pro-overlay-icon">🎁</div>
+<h2 class="pro-overlay-title" data-i18n="proTitle">Obtenez le Plan Pro gratuitement !</h2>
+<p class="pro-overlay-desc" data-i18n="proDesc">Testez PaperBot Pro pendant 1 mois en échange de vos retours et d'une promotion sur vos réseaux sociaux.</p>
+<div class="pro-overlay-steps">
+<div class="pro-step"><span class="pro-step-num">1</span><span data-i18n="proStep1">Utilisez PaperBot et partagez votre expérience</span></div>
+<div class="pro-step"><span class="pro-step-num">2</span><span data-i18n="proStep2">Publiez un avis sur vos réseaux sociaux</span></div>
+<div class="pro-step"><span class="pro-step-num">3</span><span data-i18n="proStep3">Recevez 1 mois de Plan Pro offert</span></div>
+</div>
+<form id="proForm" action="https://formsubmit.co/hello@mypaperbot.com" method="POST">
+<input type="hidden" name="_subject" value="PaperBot - Demande Pro Gratuit">
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_next" value="https://mypaperbot.com">
+<div class="contact-field">
+<label data-i18n="proFormName">Votre nom</label>
+<input type="text" name="name" required>
+</div>
+<div class="contact-field">
+<label data-i18n="proFormPhone">WhatsApp ou Telegram</label>
+<input type="tel" name="phone" required placeholder="+221 77 123 45 67">
+</div>
+<div class="contact-field">
+<label data-i18n="proFormSocial">Lien de votre page / profil social</label>
+<input type="url" name="social" placeholder="https://facebook.com/...">
+</div>
+<button type="submit" class="btn btn-wa pro-overlay-submit" data-i18n="proFormSend">Demander mon Pro gratuit</button>
+</form>
+<div class="pro-success" id="proSuccess" data-i18n="proFormOk">Demande envoyée ! Nous vous contacterons bientôt.</div>
+</div>
+</div>
 
 <script>
 // ===== TRANSLATIONS =====
@@ -679,7 +737,8 @@ ctaLabel:"Prêt ?",ctaTitle:"Votre première facture en 10 secondes.",ctaSub:"Gr
 footerText:"Fait avec ❤️ pour l'Afrique",
 cancelInfo:"Pour résilier votre abonnement, envoyez simplement le mot « résilier » au bot sur WhatsApp ou Telegram. La résiliation est immédiate et sans frais.",
 legalMentions:"Mentions légales",legalPrivacy:"Politique de confidentialité",legalTerms:"CGU",
-contactBtn:"Contact",contactTitle:"Nous contacter",contactName:"Nom",contactPhone:"Téléphone (optionnel)",contactEmail:"Email (optionnel)",contactMsg:"Message",contactSend:"Envoyer",contactOk:"Message envoyé !"
+contactBtn:"Contact",contactTitle:"Nous contacter",contactName:"Nom",contactPhone:"Téléphone (optionnel)",contactEmail:"Email (optionnel)",contactMsg:"Message",contactSend:"Envoyer",contactOk:"Message envoyé !",
+proNavBtn:"Pro Gratuit",proTitle:"Obtenez le Plan Pro gratuitement !",proDesc:"Testez PaperBot Pro pendant 1 mois en échange de vos retours et d'une promotion sur vos réseaux sociaux.",proStep1:"Utilisez PaperBot et partagez votre expérience",proStep2:"Publiez un avis sur vos réseaux sociaux",proStep3:"Recevez 1 mois de Plan Pro offert",proFormName:"Votre nom",proFormPhone:"WhatsApp ou Telegram",proFormSocial:"Lien de votre page / profil social",proFormSend:"Demander mon Pro gratuit",proFormOk:"Demande envoyée ! Nous vous contacterons bientôt."
 },
 en:{
 heroTitle:'Send a message,<br>get an <span class="accent">invoice</span>.',
@@ -723,7 +782,8 @@ ctaLabel:"Ready?",ctaTitle:"Your first invoice in 10 seconds.",ctaSub:"Free. No 
 footerText:"Made with ❤️ for Africa",
 cancelInfo:"To cancel your subscription, simply send the word \"cancel\" to the bot on WhatsApp or Telegram. Cancellation is immediate and free of charge.",
 legalMentions:"Legal notice",legalPrivacy:"Privacy policy",legalTerms:"Terms of use",
-contactBtn:"Contact",contactTitle:"Contact us",contactName:"Name",contactPhone:"Phone (optional)",contactEmail:"Email (optional)",contactMsg:"Message",contactSend:"Send",contactOk:"Message sent!"
+contactBtn:"Contact",contactTitle:"Contact us",contactName:"Name",contactPhone:"Phone (optional)",contactEmail:"Email (optional)",contactMsg:"Message",contactSend:"Send",contactOk:"Message sent!",
+proNavBtn:"Free Pro",proTitle:"Get the Pro Plan for free!",proDesc:"Try PaperBot Pro for 1 month in exchange for your feedback and a social media shoutout.",proStep1:"Use PaperBot and share your experience",proStep2:"Post a review on your social media",proStep3:"Get 1 month of Pro Plan for free",proFormName:"Your name",proFormPhone:"WhatsApp or Telegram",proFormSocial:"Your social media page / profile link",proFormSend:"Request my free Pro",proFormOk:"Request sent! We'll contact you soon."
 },
 ar:{
 heroTitle:'أرسل رسالة،<br>واحصل على <span class="accent">فاتورة</span>.',
@@ -767,7 +827,8 @@ ctaLabel:"مستعد؟",ctaTitle:"أول فاتورة في 10 ثوانٍ.",ctaSu
 footerText:"صُنع بـ ❤️ لأفريقيا",
 cancelInfo:"لإلغاء اشتراكك، أرسل ببساطة كلمة « إلغاء » إلى البوت على واتساب أو تيليجرام. الإلغاء فوري ومجاني.",
 legalMentions:"إشعار قانوني",legalPrivacy:"سياسة الخصوصية",legalTerms:"شروط الاستخدام",
-contactBtn:"اتصل",contactTitle:"اتصل بنا",contactName:"الاسم",contactPhone:"الهاتف (اختياري)",contactEmail:"البريد الإلكتروني (اختياري)",contactMsg:"الرسالة",contactSend:"إرسال",contactOk:"تم إرسال الرسالة!"
+contactBtn:"اتصل",contactTitle:"اتصل بنا",contactName:"الاسم",contactPhone:"الهاتف (اختياري)",contactEmail:"البريد الإلكتروني (اختياري)",contactMsg:"الرسالة",contactSend:"إرسال",contactOk:"تم إرسال الرسالة!",
+proNavBtn:"Pro مجاني",proTitle:"احصل على خطة Pro مجاناً!",proDesc:"جرب PaperBot Pro لمدة شهر مقابل ملاحظاتك ونشر تجربتك على وسائل التواصل.",proStep1:"استخدم PaperBot وشارك تجربتك",proStep2:"انشر رأيك على وسائل التواصل الاجتماعي",proStep3:"احصل على شهر من خطة Pro مجاناً",proFormName:"اسمك",proFormPhone:"واتساب أو تيليجرام",proFormSocial:"رابط صفحتك / ملفك الاجتماعي",proFormSend:"اطلب Pro المجاني",proFormOk:"تم إرسال الطلب! سنتواصل معك قريباً."
 },
 pt:{
 heroTitle:'Envie uma mensagem,<br>receba uma <span class="accent">fatura</span>.',
@@ -811,7 +872,8 @@ ctaLabel:"Pronto?",ctaTitle:"Sua primeira fatura em 10 segundos.",ctaSub:"Gratui
 footerText:"Feito com ❤️ para a África",
 cancelInfo:"Para cancelar sua assinatura, envie simplesmente a palavra \"cancelar\" ao bot no WhatsApp ou Telegram. O cancelamento é imediato e gratuito.",
 legalMentions:"Aviso legal",legalPrivacy:"Política de privacidade",legalTerms:"Termos de uso",
-contactBtn:"Contato",contactTitle:"Fale conosco",contactName:"Nome",contactPhone:"Telefone (opcional)",contactEmail:"Email (opcional)",contactMsg:"Mensagem",contactSend:"Enviar",contactOk:"Mensagem enviada!"
+contactBtn:"Contato",contactTitle:"Fale conosco",contactName:"Nome",contactPhone:"Telefone (opcional)",contactEmail:"Email (opcional)",contactMsg:"Mensagem",contactSend:"Enviar",contactOk:"Mensagem enviada!",
+proNavBtn:"Pro Grátis",proTitle:"Obtenha o Plano Pro gratuitamente!",proDesc:"Experimente o PaperBot Pro por 1 mês em troca de seu feedback e uma publicação nas redes sociais.",proStep1:"Use o PaperBot e compartilhe sua experiência",proStep2:"Publique uma avaliação nas suas redes sociais",proStep3:"Receba 1 mês de Plano Pro grátis",proFormName:"Seu nome",proFormPhone:"WhatsApp ou Telegram",proFormSocial:"Link da sua página / perfil social",proFormSend:"Solicitar meu Pro grátis",proFormOk:"Pedido enviado! Entraremos em contato em breve."
 },
 sw:{
 heroTitle:'Tuma ujumbe,<br>pokea <span class="accent">ankara</span>.',
@@ -855,7 +917,8 @@ ctaLabel:"Uko tayari?",ctaTitle:"Ankara yako ya kwanza kwa sekunde 10.",ctaSub:"
 footerText:"Imetengenezwa kwa ❤️ kwa Afrika",
 cancelInfo:"Kufuta usajili wako, tuma neno \"futa\" kwa bot kwenye WhatsApp au Telegram. Ufutaji ni wa papo hapo na bila malipo.",
 legalMentions:"Taarifa za kisheria",legalPrivacy:"Sera ya faragha",legalTerms:"Masharti ya matumizi",
-contactBtn:"Wasiliana",contactTitle:"Wasiliana nasi",contactName:"Jina",contactPhone:"Simu (hiari)",contactEmail:"Barua pepe (hiari)",contactMsg:"Ujumbe",contactSend:"Tuma",contactOk:"Ujumbe umetumwa!"
+contactBtn:"Wasiliana",contactTitle:"Wasiliana nasi",contactName:"Jina",contactPhone:"Simu (hiari)",contactEmail:"Barua pepe (hiari)",contactMsg:"Ujumbe",contactSend:"Tuma",contactOk:"Ujumbe umetumwa!",
+proNavBtn:"Pro Bure",proTitle:"Pata Mpango wa Pro bure!",proDesc:"Jaribu PaperBot Pro kwa mwezi 1 kwa kubadilishana maoni yako na kutangaza kwenye mitandao yako ya kijamii.",proStep1:"Tumia PaperBot na ushiriki uzoefu wako",proStep2:"Chapisha tathmini kwenye mitandao yako ya kijamii",proStep3:"Pokea mwezi 1 wa Mpango wa Pro bure",proFormName:"Jina lako",proFormPhone:"WhatsApp au Telegram",proFormSocial:"Kiungo cha ukurasa / wasifu wako wa kijamii",proFormSend:"Omba Pro yangu bure",proFormOk:"Ombi limetumwa! Tutawasiliana nawe hivi karibuni."
 }
 };
 
@@ -1066,9 +1129,21 @@ popup.classList.remove('open');popup.removeAttribute('data-active');
 }
 });
 
-// ===== CONTACT DROPDOWN =====
-function toggleContactDD(){document.getElementById('contactDD').classList.toggle('open')}
-document.addEventListener('click',e=>{if(!e.target.closest('.contact-sw'))document.getElementById('contactDD').classList.remove('open')});
+// ===== FOOTER CONTACT =====
+function toggleFooterContact(){document.getElementById('footerContactPopup').classList.toggle('open')}
+document.addEventListener('click',e=>{
+if(!e.target.closest('.footer-contact-wrap')){
+const p=document.getElementById('footerContactPopup');
+if(p)p.classList.remove('open');
+}
+});
+
+// ===== PRO OVERLAY =====
+function toggleProOverlay(){document.getElementById('proOverlay').classList.toggle('open')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){
+const o=document.getElementById('proOverlay');
+if(o&&o.classList.contains('open'))o.classList.remove('open');
+}});
 
 // ===== INIT =====
 (function(){
