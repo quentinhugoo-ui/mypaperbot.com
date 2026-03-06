@@ -271,6 +271,8 @@ footer{background:var(--c-bg);border-top:1px solid var(--c-border);padding:.75re
 .pro-overlay-steps{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.5rem;text-align:left}
 .pro-step{display:flex;align-items:center;gap:.6rem;font-size:.85rem;color:var(--c-text)}
 .pro-step-num{width:26px;height:26px;background:var(--c-green);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;flex-shrink:0}
+.pro-spots-badge{background:linear-gradient(135deg,#FEF3C7,#FDE68A);color:#92400E;font-size:.78rem;font-weight:700;padding:.4rem .8rem;border-radius:var(--r);text-align:center;margin-bottom:1rem}
+[data-theme="dark"] .pro-spots-badge{background:linear-gradient(135deg,#78350F,#92400E);color:#FDE68A}
 .pro-overlay-content .contact-field{text-align:left}
 .pro-overlay-submit{width:100%;justify-content:center;margin-top:.25rem}
 .pro-success{display:none;text-align:center;padding:1rem;font-size:.95rem;color:var(--c-green);font-weight:600}
@@ -665,6 +667,7 @@ PaperBot
 <div class="pro-overlay-icon">🎁</div>
 <h2 class="pro-overlay-title" data-i18n="proTitle">Obtenez le Plan Pro gratuitement !</h2>
 <p class="pro-overlay-desc" data-i18n="proDesc">Testez PaperBot Pro pendant 1 mois en échange de vos retours et d'une promotion sur vos réseaux sociaux.</p>
+<div class="pro-spots-badge" data-i18n="proSpots">🔥 Places limitées — 50 testeurs seulement</div>
 <div class="pro-overlay-steps">
 <div class="pro-step"><span class="pro-step-num">1</span><span data-i18n="proStep1">Utilisez PaperBot et partagez votre expérience</span></div>
 <div class="pro-step"><span class="pro-step-num">2</span><span data-i18n="proStep2">Publiez un avis sur vos réseaux sociaux</span></div>
@@ -738,7 +741,7 @@ footerText:"Fait avec ❤️ pour l'Afrique",
 cancelInfo:"Pour résilier votre abonnement, envoyez simplement le mot « résilier » au bot sur WhatsApp ou Telegram. La résiliation est immédiate et sans frais.",
 legalMentions:"Mentions légales",legalPrivacy:"Politique de confidentialité",legalTerms:"CGU",
 contactBtn:"Contact",contactTitle:"Nous contacter",contactName:"Nom",contactPhone:"Téléphone",contactPlatform:"Plateforme préférée",contactEmail:"Email (optionnel)",contactMsg:"Message",contactSend:"Envoyer",contactOk:"Message envoyé !",
-proNavBtn:"Pro Gratuit",proTitle:"Obtenez le Plan Pro gratuitement !",proDesc:"Testez PaperBot Pro pendant 1 mois en échange de vos retours et d'une promotion sur vos réseaux sociaux.",proStep1:"Utilisez PaperBot et partagez votre expérience",proStep2:"Publiez un avis sur vos réseaux sociaux",proStep3:"Recevez 1 mois de Plan Pro offert",proFormName:"Votre nom",proFormPhone:"WhatsApp ou Telegram",proFormSocial:"Lien de votre page / profil social",proFormSend:"Demander mon Pro gratuit",proFormOk:"Demande envoyée ! Nous vous contacterons bientôt."
+proNavBtn:"Pro Gratuit",proTitle:"Obtenez le Plan Pro gratuitement !",proDesc:"Testez PaperBot Pro pendant 1 mois en échange de vos retours et d'une promotion sur vos réseaux sociaux.",proStep1:"Utilisez PaperBot et partagez votre expérience",proStep2:"Publiez un avis sur vos réseaux sociaux",proStep3:"Recevez 1 mois de Plan Pro offert",proFormName:"Votre nom",proFormPhone:"WhatsApp ou Telegram",proFormSocial:"Lien de votre page / profil social",proFormSend:"Demander mon Pro gratuit",proFormOk:"Demande envoyée ! Nous vous contacterons bientôt.",proSpots:"🔥 Places limitées — 50 testeurs seulement"
 },
 en:{
 heroTitle:'Send a message,<br>get an <span class="accent">invoice</span>.',
@@ -783,7 +786,7 @@ footerText:"Made with ❤️ for Africa",
 cancelInfo:"To cancel your subscription, simply send the word \"cancel\" to the bot on WhatsApp or Telegram. Cancellation is immediate and free of charge.",
 legalMentions:"Legal notice",legalPrivacy:"Privacy policy",legalTerms:"Terms of use",
 contactBtn:"Contact",contactTitle:"Contact us",contactName:"Name",contactPhone:"Phone",contactPlatform:"Preferred platform",contactEmail:"Email (optional)",contactMsg:"Message",contactSend:"Send",contactOk:"Message sent!",
-proNavBtn:"Free Pro",proTitle:"Get the Pro Plan for free!",proDesc:"Try PaperBot Pro for 1 month in exchange for your feedback and a social media shoutout.",proStep1:"Use PaperBot and share your experience",proStep2:"Post a review on your social media",proStep3:"Get 1 month of Pro Plan for free",proFormName:"Your name",proFormPhone:"WhatsApp or Telegram",proFormSocial:"Your social media page / profile link",proFormSend:"Request my free Pro",proFormOk:"Request sent! We'll contact you soon."
+proNavBtn:"Free Pro",proTitle:"Get the Pro Plan for free!",proDesc:"Try PaperBot Pro for 1 month in exchange for your feedback and a social media shoutout.",proStep1:"Use PaperBot and share your experience",proStep2:"Post a review on your social media",proStep3:"Get 1 month of Pro Plan for free",proFormName:"Your name",proFormPhone:"WhatsApp or Telegram",proFormSocial:"Your social media page / profile link",proFormSend:"Request my free Pro",proFormOk:"Request sent! We'll contact you soon.",proSpots:"🔥 Limited spots — 50 testers only"
 },
 ar:{
 heroTitle:'أرسل رسالة،<br>واحصل على <span class="accent">فاتورة</span>.',
@@ -828,7 +831,7 @@ footerText:"صُنع بـ ❤️ لأفريقيا",
 cancelInfo:"لإلغاء اشتراكك، أرسل ببساطة كلمة « إلغاء » إلى البوت على واتساب أو تيليجرام. الإلغاء فوري ومجاني.",
 legalMentions:"إشعار قانوني",legalPrivacy:"سياسة الخصوصية",legalTerms:"شروط الاستخدام",
 contactBtn:"اتصل",contactTitle:"اتصل بنا",contactName:"الاسم",contactPhone:"الهاتف",contactPlatform:"المنصة المفضلة",contactEmail:"البريد الإلكتروني (اختياري)",contactMsg:"الرسالة",contactSend:"إرسال",contactOk:"تم إرسال الرسالة!",
-proNavBtn:"Pro مجاني",proTitle:"احصل على خطة Pro مجاناً!",proDesc:"جرب PaperBot Pro لمدة شهر مقابل ملاحظاتك ونشر تجربتك على وسائل التواصل.",proStep1:"استخدم PaperBot وشارك تجربتك",proStep2:"انشر رأيك على وسائل التواصل الاجتماعي",proStep3:"احصل على شهر من خطة Pro مجاناً",proFormName:"اسمك",proFormPhone:"واتساب أو تيليجرام",proFormSocial:"رابط صفحتك / ملفك الاجتماعي",proFormSend:"اطلب Pro المجاني",proFormOk:"تم إرسال الطلب! سنتواصل معك قريباً."
+proNavBtn:"Pro مجاني",proTitle:"احصل على خطة Pro مجاناً!",proDesc:"جرب PaperBot Pro لمدة شهر مقابل ملاحظاتك ونشر تجربتك على وسائل التواصل.",proStep1:"استخدم PaperBot وشارك تجربتك",proStep2:"انشر رأيك على وسائل التواصل الاجتماعي",proStep3:"احصل على شهر من خطة Pro مجاناً",proFormName:"اسمك",proFormPhone:"واتساب أو تيليجرام",proFormSocial:"رابط صفحتك / ملفك الاجتماعي",proFormSend:"اطلب Pro المجاني",proFormOk:"تم إرسال الطلب! سنتواصل معك قريباً.",proSpots:"🔥 أماكن محدودة — 50 مختبراً فقط"
 },
 pt:{
 heroTitle:'Envie uma mensagem,<br>receba uma <span class="accent">fatura</span>.',
@@ -873,7 +876,7 @@ footerText:"Feito com ❤️ para a África",
 cancelInfo:"Para cancelar sua assinatura, envie simplesmente a palavra \"cancelar\" ao bot no WhatsApp ou Telegram. O cancelamento é imediato e gratuito.",
 legalMentions:"Aviso legal",legalPrivacy:"Política de privacidade",legalTerms:"Termos de uso",
 contactBtn:"Contato",contactTitle:"Fale conosco",contactName:"Nome",contactPhone:"Telefone",contactPlatform:"Plataforma preferida",contactEmail:"Email (opcional)",contactMsg:"Mensagem",contactSend:"Enviar",contactOk:"Mensagem enviada!",
-proNavBtn:"Pro Grátis",proTitle:"Obtenha o Plano Pro gratuitamente!",proDesc:"Experimente o PaperBot Pro por 1 mês em troca de seu feedback e uma publicação nas redes sociais.",proStep1:"Use o PaperBot e compartilhe sua experiência",proStep2:"Publique uma avaliação nas suas redes sociais",proStep3:"Receba 1 mês de Plano Pro grátis",proFormName:"Seu nome",proFormPhone:"WhatsApp ou Telegram",proFormSocial:"Link da sua página / perfil social",proFormSend:"Solicitar meu Pro grátis",proFormOk:"Pedido enviado! Entraremos em contato em breve."
+proNavBtn:"Pro Grátis",proTitle:"Obtenha o Plano Pro gratuitamente!",proDesc:"Experimente o PaperBot Pro por 1 mês em troca de seu feedback e uma publicação nas redes sociais.",proStep1:"Use o PaperBot e compartilhe sua experiência",proStep2:"Publique uma avaliação nas suas redes sociais",proStep3:"Receba 1 mês de Plano Pro grátis",proFormName:"Seu nome",proFormPhone:"WhatsApp ou Telegram",proFormSocial:"Link da sua página / perfil social",proFormSend:"Solicitar meu Pro grátis",proFormOk:"Pedido enviado! Entraremos em contato em breve.",proSpots:"🔥 Vagas limitadas — apenas 50 testadores"
 },
 sw:{
 heroTitle:'Tuma ujumbe,<br>pokea <span class="accent">ankara</span>.',
@@ -918,7 +921,7 @@ footerText:"Imetengenezwa kwa ❤️ kwa Afrika",
 cancelInfo:"Kufuta usajili wako, tuma neno \"futa\" kwa bot kwenye WhatsApp au Telegram. Ufutaji ni wa papo hapo na bila malipo.",
 legalMentions:"Taarifa za kisheria",legalPrivacy:"Sera ya faragha",legalTerms:"Masharti ya matumizi",
 contactBtn:"Wasiliana",contactTitle:"Wasiliana nasi",contactName:"Jina",contactPhone:"Simu",contactPlatform:"Jukwaa unalopendelea",contactEmail:"Barua pepe (hiari)",contactMsg:"Ujumbe",contactSend:"Tuma",contactOk:"Ujumbe umetumwa!",
-proNavBtn:"Pro Bure",proTitle:"Pata Mpango wa Pro bure!",proDesc:"Jaribu PaperBot Pro kwa mwezi 1 kwa kubadilishana maoni yako na kutangaza kwenye mitandao yako ya kijamii.",proStep1:"Tumia PaperBot na ushiriki uzoefu wako",proStep2:"Chapisha tathmini kwenye mitandao yako ya kijamii",proStep3:"Pokea mwezi 1 wa Mpango wa Pro bure",proFormName:"Jina lako",proFormPhone:"WhatsApp au Telegram",proFormSocial:"Kiungo cha ukurasa / wasifu wako wa kijamii",proFormSend:"Omba Pro yangu bure",proFormOk:"Ombi limetumwa! Tutawasiliana nawe hivi karibuni."
+proNavBtn:"Pro Bure",proTitle:"Pata Mpango wa Pro bure!",proDesc:"Jaribu PaperBot Pro kwa mwezi 1 kwa kubadilishana maoni yako na kutangaza kwenye mitandao yako ya kijamii.",proStep1:"Tumia PaperBot na ushiriki uzoefu wako",proStep2:"Chapisha tathmini kwenye mitandao yako ya kijamii",proStep3:"Pokea mwezi 1 wa Mpango wa Pro bure",proFormName:"Jina lako",proFormPhone:"WhatsApp au Telegram",proFormSocial:"Kiungo cha ukurasa / wasifu wako wa kijamii",proFormSend:"Omba Pro yangu bure",proFormOk:"Ombi limetumwa! Tutawasiliana nawe hivi karibuni.",proSpots:"🔥 Nafasi chache — wajaribu 50 tu"
 }
 };
 
